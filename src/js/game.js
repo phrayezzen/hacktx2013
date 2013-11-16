@@ -89,11 +89,15 @@ var mySong = Songs[0];
       		createjs.Ticker.addListener(window);
            
 		setInterval(function() { 
-			score_container.innerHTML = "" + score;
+			score_container.innerHTML = "" + score + " Combo: " + score_multipler + "x";
 		}, 1000);
         }
 
 	var score = 0;
+	  var score_break = 0;
+	  var score_combo = 0;
+	  var score_multipler = 1;
+	var curColor = DEFAULT_COLOR;
       	function tick() {
 		if(run_game) { 
 			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
@@ -116,9 +120,22 @@ var mySong = Songs[0];
 					console.log(ydiff);
 					newColor = DO_IT_COLOR;
 					if( intune ) {
-						score += 1;
+				    score_break = 0;
+				    score_combo += 1;
+				    if (score_combo > 15) {
+				      score_multipler += 1;
+				      score_combo = 0;
+			    }
+						score += 1 * score_multipler;
 						newColor = BINGO_COLOR;
-					}
+					} else {
+            score_break += 1;
+            if (score_break > 3) {
+              score_break = 0;
+              score_combo = 0;
+              score_multipler = 1;
+            }
+          }
 				}
 				if( newColor != curColor[i] ){
 					notes[i].graphics.clear().beginStroke("#000").beginFill(newColor).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
