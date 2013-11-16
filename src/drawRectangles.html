@@ -1,9 +1,21 @@
 <HTML>
 <head>
+	<script src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
+	<script src="./js/easel.js"></script>
+	<script src="./js/musicPlayer.js"></script>
+	<script src="./js/pitchdetect.js"></script>
 </head>
-<script src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
-<script src="./js/easel.js"></script>
-<script src="./js/pitchdetect.js"></script>
+
+<body onload="init();">
+	<button onclick="musicPlayer('sound1'); run_game = true;">Start!</button>  
+
+  <br />
+	Score: <p id="score"></p>
+  <br />
+  <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
+  <br />
+	<canvas id="note-cont" style="background:#666;" width="1600" height="900"></canvas>
+	<audio id='sound1' src="assets/twinkle-twinkle-little-star.mp3"></audio>
 <script>
 				var mySong = {
 								startTime : 0.56,
@@ -20,6 +32,9 @@
         var BEAT_LENGTH_SIZE = 120;
         var NUM_NOTES = 12;
         var NOTE_TOL = 50;
+	var DEFAULT_COLOR = "#FF0";
+	var DO_IT_COLOR = "#0FF";
+	var BINGO_COLOR = "#0F0";
 
         var canvas, width, height;
       	var notes;
@@ -64,7 +79,7 @@
               var x = getXCoordFromBeat(beat);
               var width = noteLength * BEAT_LENGTH_SIZE - 2;
               var height = NOTE_TOL;
-              rects.push(new createjs.Rectangle(0, y, width, height));
+              rects.push(new createjs.Rectangle(0, y - (width/2), width, height));
 	      rects[i].mahX = x;
               beat += noteLength; // offset next note starting beat
             }
@@ -73,7 +88,7 @@
 
       	    notes = [];
             for (var i = 0; i < rects.length; i++) {
-              var s = drawRectangle(rects[i], "#F00");
+              var s = drawRectangle(rects[i], DEFAULT_COLOR);
 	      notes.push(s);
 	      notes[i].x = rects[i].mahX;
               stage.addChild(s);
@@ -85,6 +100,8 @@
            
         }
 
+	var score_container = document.getElementById("score");
+	var score = 0;
       	function tick() {
 		if(run_game) { 
 			var moveSpeed = 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
@@ -97,14 +114,16 @@
 				var intune = (y_val > rects[i].y && y_val < (rects[i].y + rects[i].height));
 				if( !highlighted[i] && intersectingLine ) { 
 					highlighted[i] = true;
-					notes[i].graphics.clear().beginFill("#0FF").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+					notes[i].graphics.clear().beginStroke("#000").beginFill(DO_IT_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
 				}
 				if( highlighted[i] && !intersectingLine ) {
 					highlighted[i] = false;
-					notes[i].graphics.clear().beginFill("#F00").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+					notes[i].graphics.clear().beginStroke("#000").beginFill(DEFAULT_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
 				}
 				if(intune && highlighted[i]){
-					notes[i].graphics.clear().beginFill("#0F0").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+					score += 1;
+					score_container.innerHTML = "" + score;
+					notes[i].graphics.clear().beginStroke("#000").beginFill(BINGO_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
 				}
 			}
 			userPitchLine.x -= moveSpeed;
@@ -174,12 +193,6 @@
 
 </script>
 
-<body onload="init();">
-	<button onclick="run_game = true;">Start!</button>  
-  <br />
-  <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
-  <br />
-	<canvas id="note-cont" style="background:#666;" width="1600" height="900"></canvas>
 </body>
 
 </HTML>
