@@ -24,18 +24,24 @@
       	var notes;
         var stage;
       	var userPitch;
+      	var userPitchLine;
+      	var lineX = 200;
+      	var userPitch;
 
         function init() {
             canvas = document.getElementById('note-cont');
             width = canvas.width;
             height = canvas.height;
+        		userPitchLine = new createjs.Shape();
+        		userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100).lineTo(200,200);
+		
             VERT_SPACING = height / NUM_NOTES;
             stage = new createjs.Stage(canvas);
             createjs.Ticker.setFPS(FRAME_RATE);
 
             var curTimeMarker = new createjs.Shape();
             var markerX = 1/4*width;
-						var g = curTimeMarker.graphics;
+            var g = curTimeMarker.graphics;
             g.beginFill("#FFF");
             g.drawRect(markerX, 0, 1, height);
             g.endFill();
@@ -62,17 +68,22 @@
               stage.addChild(s);
             }
 
+              stage.addChild(userPitchLine);
       		stage.update();
       		createjs.Ticker.addListener(window);
            
         }
 
       	function tick() {
-      		for (var i = 0; i < notes.length; i++) {
-      			notes[i].x -= 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
+      		var moveSpeed = 2 * BEAT_LENGTH / FRAME_RATE;
+      		for(var i = 0; i < notes.length; i++) {
+      			notes[i].x -= moveSpeed;
       		}
-      		if (userPitch !== undefined){
-      			// console.log(userPitch);
+      		userPitchLine.x -= moveSpeed;
+      		lineX += moveSpeed;
+      		if(userPitch !== undefined){
+      			userPitchLine.graphics.lineTo(lineX, userPitch / 8);
+      //			console.log(userPitch);
       		}
       		stage.update();
       	}
