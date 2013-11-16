@@ -5,14 +5,20 @@
 <script src="./js/easel.js"></script>
 <script src="./js/pitchdetect.js"></script>
 <script>
-	var mySong = {
-		bpm : 120,
-		title : "Song name",
-		notes : [["C",2], ["E",4], ["D",3], ["B", 3]]
-	};
+				var mySong = {
+								startTime : 0.56,
+                bpm :  94.79,
+                title : "Twinkle Twinkle Little Star",
+                notes : [["C",1],["C",1],["G",1],["G",1],["A",1],["A",1],["G",2],["F",1],["F",1],["E",1],["E",1],["D",1],["D",1],["C",2],
+						 ["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],
+						 ["C",1],["C",1],["G",1],["G",1],["A",1],["A",1],["G",2],["F",1],["F",1],["E",1],["E",1],["D",1],["D",1],["C",2]]
+				};
+
+        var FRAME_RATE = 60;
         var INIT_X = 100;
-        var VERT_SPACING = 50;
-        var BEAT_LENGTH = 30;
+        var VERT_SPACING;
+        var BEAT_LENGTH = 60;
+        var NUM_NOTES = 7;
 
         var canvas, width, height;
       	var notes;
@@ -20,6 +26,8 @@
 	var userPitch;
 	var userPitchLine;
 	var lineX = 200;
+      	var userPitch;
+
         function init() {
             canvas = document.getElementById('note-cont');
             width = canvas.width;
@@ -27,6 +35,18 @@
 		userPitchLine = new createjs.Shape();
 		userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100).lineTo(200,200);
 		
+            VERT_SPACING = height / NUM_NOTES;
+            stage = new createjs.Stage(canvas);
+            createjs.Ticker.setFPS(FRAME_RATE);
+
+            var curTimeMarker = new createjs.Shape();
+            var markerX = 1/4*width;
+	var g = curTimeMarker.graphics;
+            g.beginFill("#FFF");
+            g.drawRect(markerX, 0, 1, height);
+            g.endFill();
+            stage.addChild(curTimeMarker);
+
             var rects = new Array();
             var beat = 0;
             for (var i = 0; i < mySong.notes.length; i++) {
@@ -34,14 +54,12 @@
               var noteLength = note[1];
               var y = getYCoordFromNote(note[0]); // pitch
               var x = getXCoordFromBeat(beat);
-              var width = noteLength * BEAT_LENGTH;
+              var width = noteLength * BEAT_LENGTH - 2;
               var height = 10;
               rects.push(new createjs.Rectangle(x, y, width, height));
               beat += noteLength; // offset next note starting beat
             }
             console.log(rects);
-
-            stage = new createjs.Stage(canvas);
 
       	    notes = [];
             for (var i = 0; i < rects.length; i++) {
@@ -57,7 +75,7 @@
         }
 
 	function tick() {
-		var moveSpeed = 1 * (mySong.bpm / 120);
+		var moveSpeed = 2 * BEAT_LENGTH / FRAME_RATE;
 		for(var i = 0; i < notes.length; i++) {
 			notes[i].x -= moveSpeed;
 		}
@@ -71,13 +89,14 @@
 	}
 
         function getXCoordFromBeat(beat) {
-          var HORIZ_OFFSET = 200;
+          var HORIZ_OFFSET = 2/9 * canvas.width;
           return beat * BEAT_LENGTH + HORIZ_OFFSET;
         }
 
         function getYCoordFromNote(note){
           var pos;
-          var OFFSET = 100;
+          var OFFSET = 2/9 * canvas.height;
+          console.log(height);
           if (note == "C") {
             pos = 6;
           } else if (note == "D") {
@@ -97,7 +116,6 @@
             return null;
           }
 
-          // * VERT_SPACING
           return pos * VERT_SPACING + OFFSET;
         }
 
@@ -111,14 +129,16 @@
             g.endFill();
 
             return s;
-	}
+				}
 
 </script>
 
 <body onload="init();">
 	<button onclick="toggleLiveInput()">Start!</button>
-	<canvas id="note-cont" style="background:#666;" width="900" height="900"></canvas>
-	<input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
+  <br />
+  <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
+  <br />
+	<canvas id="note-cont" style="background:#666;" width="1600" height="900"></canvas>
 </body>
 
 </HTML>
