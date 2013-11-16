@@ -50,7 +50,7 @@
 
 	function tick() {
 		for(var i = 0; i < notes.length; i++) {
-			notes[i].x -= 1;
+			notes[i].x -= 1 * (mySong.bpm / 120);
 		}
 		stage.update();
 	}
