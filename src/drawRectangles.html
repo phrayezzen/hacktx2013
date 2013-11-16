@@ -19,7 +19,7 @@
         var VERT_SPACING;
         var BEAT_LENGTH_SIZE = 120;
         var NUM_NOTES = 12;
-        var NOTE_TOL = 20;
+        var NOTE_TOL = 50;
 
         var canvas, width, height;
       	var notes;
@@ -88,12 +88,13 @@
       	function tick() {
 		if(run_game) { 
 			var moveSpeed = 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
-			var y_val = canvas.height - (userPitch / 2);
 			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
+			var y_val = canvas.height - (userPitch / 4);
+		        y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
 			for(var i = 0; i < notes.length; i++) {
 				notes[i].x -= moveSpeed;
 				var intersectingLine = (markerX > notes[i].x && markerX < (notes[i].x + rects[i].width));
-				var intune = mySong.notes[i][0] == userNote;
+				var intune = (y_val > rects[i].y && y_val < (rects[i].y + rects[i].height));
 				if( !highlighted[i] && intersectingLine ) { 
 					highlighted[i] = true;
 					notes[i].graphics.clear().beginFill("#0FF").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
@@ -108,11 +109,9 @@
 			}
 			userPitchLine.x -= moveSpeed;
 			lineX += moveSpeed;
-			var y_val = canvas.height - (userPitch / 4);
-      y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
 			if(userPitch !== undefined){
 				userPitchLine.graphics.lineTo(lineX, y_val);
-				console.log( noteStrings[noteFromPitch(userPitch) % 12] );
+				//console.log( noteStrings[noteFromPitch(userPitch) % 12] );
 			} else {
 				// userPitchLine.graphics.moveTo(lineX, canvas.height);
 				userPitchWasUndefined = true;
@@ -128,7 +127,7 @@
 
         function getYCoordFromNote(note){
           var pos;
-          console.log(height);
+          //console.log(height);
           if (note == "C" || note == "B#") {
             pos = 6;
           } else if (note == "C#" || note == "Db") {
