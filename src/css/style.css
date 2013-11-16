@@ -2,6 +2,12 @@ body {
 	font-family: 'Open Sans';
 	background-image: url('../img/bg.jpg');
 	background-repeat: repeat;
+	margin: 0;
+	padding: 0;
+}
+
+a {
+	text-decoration: none;
 }
 
 div[rel] {
@@ -46,11 +52,22 @@ div[rel] div.menu div.title div {
 	text-shadow: 0px 0px 3px #DDD;
 	cursor: pointer;
 	user-select: none;
-	background-color: #EFEFEF;
+	background-color: #DFDFDF;
 	padding: 5px 10px;
 	margin-top: -5px;
 	border-radius: 0px 10px 0px 0px;
+	transition: all 0.4s ease-in;
 }
+
+div[rel] div.menu div.title div:hover {
+	background-color: #FFFFFF;
+}
+
+div.button {
+	margin-top: 15px;
+	margin-button: 10px;
+}
+
 
 div[rel] div.menu div.box {
 	padding: 10px;
@@ -64,7 +81,8 @@ div.home div.menu div.box a[rel]:last-child div {
 	margin-bottom: 30px;
 }
 
-div.home div.menu div.box a[rel] div {
+div.home div.menu div.box a[rel] div,
+div.button {
 	padding: 4px 8px;
 	border-radius: 5px;
 	border: 1px solid #000;
@@ -80,13 +98,15 @@ div.home div.menu div.box a[rel] div {
 	margin-bottom: 10px;
 }
 
-div.home div.menu div.box a[rel] div:hover {
+div.home div.menu div.box a[rel] div:hover,
+div.button:hover {
 	background-color: #3C6;
 	position: relative;
 	left: 5px;
 }
 
-div.home div.menu div.box a[rel] div:active {
+div.home div.menu div.box a[rel] div:active,
+div.button:active {
 	position: relative;
 	left: 5px;
 	top: 2px;
@@ -101,4 +121,374 @@ div.home div.credits {
 	margin-top: 15px;
 	text-align: center;
 	text-shadow: 1px 1px 2px #FFF;
+}
+
+div.scores div.menu div.box {
+	padding: 20px;
+}
+
+div.settings div.menu div.box div.setting {
+	font-size: 22px;
+	border-bottom: 2px solid rgb(85,85,85);
+	padding: 2px;
+	margin-bottom: 5px;
+}
+
+div.settings div.menu div.box div.option {
+	padding: 2px;
+	margin-bottom: 15px;
+	line-height: 1.3em;
+}
+
+div.new_game div.menu div.box div.option {
+	text-align: center;
+	font-size: 24px;
+}
+
+/*Game Styles*/
+div.game div.bar {
+	z-index: 5;
+	background-color: rgb(76, 102, 164);
+	color: #FFF;
+	padding: 11px 10px 14px 15px;
+	font-size: 25px;
+	text-shadow: 2px 2px 2px #000;
+	border-bottom: 1px solid #FFF;
+	text-align: left;
+	box-shadow: 0px 0px 15px 2px #000;
+}
+
+div.game div.bar div {
+	color: #000;
+	float: right;
+	margin-right: -10px;
+	text-shadow: 0px 0px 3px #DDD;
+	cursor: pointer;
+	user-select: none;
+	background-color: #DFDFDF;
+	padding: 11px 15px 14px 20px;
+	margin-top: -11px;
+	border-radius: 0px 0px 0px 0px;
+	transition: all 0.4s ease-in;
+}
+
+div.game div.bar div:hover {
+	background-color: #FFF;
+}
+
+div.game div.countdown {
+	width: 150px;
+	height: 150px;
+	position: absolute;
+	z-index: 10;
+	
+	left: 50%;
+	top: 50%;
+	margin-left: -75px;
+	margin-top: -75px;
+	background-color: rgba(0,0,0,0.4);
+	border-radius: 30px;
+	display: none;
+}
+
+div.game div.countdown div {
+	color: #FFF;
+	font-size: 72px;
+	text-shadow: 2px 2px 3px #000;
+	text-align: center;
+	padding-top: 20px;
+}
+
+div.game div.canvas_frame {
+	/*background-color: #FFC;*/
+}
+
+/*
+	Gridded Tables
+*/
+table, table.reset {
+	border-collapse: collapse;
+	border-spacing: 0;
+	border: 0;
+	padding: 0;
+	margin: 0;
+	width: 100%;	
+}
+
+table td, table th, table.reset td, table.reset th {
+	padding: 0;
+	margin: 0;
+	vertical-align: top;
+	border: 0;
+}
+
+table.pad td, table.pad th, table.reset.pad td, table.reset.pad th {
+	padding: 4px !important;
+}
+
+table tr, table.reset tr {
+	border: 0;	
+}
+
+table td strong {
+	font-weight: bold;	
+}
+
+table.reset td {
+	padding: 0px !important;	
+}
+
+table.reset tr {
+	border: 0px !important;	
+}
+
+table.reset tr:nth-child(2n) {
+	background-color: inherit !important;
+}
+
+.noselect {
+	-webkit-user-select: none;
+	-khtml-user-select: none;
+	-moz-user-select: none;
+	-o-user-select: none;
+	user-select: none;
+	cursor: pointer;
+}
+
+table.grid tr:first-child {
+}
+
+table.grid {
+	color: #252626;
+	background-color: #FFF;
+}
+
+table.grid thead tr {
+	border-top: 1px solid rgb(218, 222, 229);
+	background-color: #666 !important;
+	color: #FFF;
+}
+
+table.grid thead tr td {
+	padding: 5px;
+}
+
+table.grid td {
+	font-size: 16px;
+}
+
+table.grid.nohead tr:first-child
+{
+	border-top: 1px solid rgb(218, 222, 229);
+	background-color: #666 !important;
+	color: #FFF;
+}
+
+table.grid tr {
+	border-bottom: 1px solid rgb(218, 222, 229);
+	border-right: 1px solid rgb(218, 222, 229);
+	border-left: 1px solid rgb(218, 222, 229);
+	background-color: rgb(252,252,250);
+}
+
+table.grid th {
+	padding: 5px 5px 5px 5px;
+	text-align: left;
+	font-weight: normal;
+}
+
+table.grid td {
+	padding: 2px 5px 2px 5px;
+	text-align: left;
+}
+
+table.grid tbody tr td {
+	padding: 10px;
+}
+
+
+table.grid th a, table.grid th a:link, table.grid th a:visited {
+	color: #FFF;
+	text-decoration: none;
+	border-bottom: none;
+}
+
+table.grid tr:nth-child(2n) {
+	background-color: #F0F0F4;
+}
+
+table.grid tr.selected {
+	background-color: #FFFFBE;
+}
+
+
+table.grid.table-nav td {
+	font-size: 16px;
+	padding: 10px;
+}
+
+table.grid.table-nav tr {
+	-webkit-transition: all 0.2s ease-out;
+	-moz-transition: all 0.2s ease-out;
+	-ms-transition: all 0.2s ease-out;
+	-o-transition: all 0.2s ease-out;
+	transition: all 0.2s ease-out;	
+	cursor: pointer;
+}
+
+table.grid.table-nav tr:hover {
+	background: #FFFFAA !important;
+	background: -webkit-gradient(linear, left top, left bottom, from(#FFFF6D), to(#FFFFAA)) !important;
+	background: -moz-linear-gradient(top,  #FFFF6D,  #FFFFAA) !important;
+	filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#FFFF6D', endColorstr='#FFFFAA') !important;
+}
+
+table.grid.table-nav a {
+	border: 0 !important;
+	text-decoration: none;	
+}
+
+table.grid td.control
+{
+	text-align: center;
+	margin-top: 4px;
+	margin-bottom: 4px;
+}
+
+/*
+	####################################################################################
+	# Forms
+	####################################################################################
+*/
+
+form.form_style
+{
+}
+
+form.form_style input[type="password"],
+form.form_style input[type="email"],
+form.form_style input[type="text"],
+form.form_style input[type="file"],
+form.form_style textarea,
+form.form_style select
+{
+	width: 99%;
+	padding: 7px 5px;
+	font-size: 18px;
+	border: 1px solid rgb(198, 198, 198);
+	background-color: rgb(244, 244, 244);
+	/*font-family: Arial,Helvetica,Calibri,sans-serif;*/
+	font-family: 'Open Sans';
+	border-radius: 4px 4px 4px 4px;
+	box-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.15) inset;
+	color: rgb(30, 57, 80);
+	margin-top: 5px;
+	margin-bottom: 5px;
+	outline: none;
+}
+
+form.form_style input[type="password"],
+form.form_style input[type="email"],
+form.form_style input[type="text"],
+form.form_style input[type="file"] {
+	max-width: 350px;
+}
+
+form.form_style select {
+	max-width: 360px;
+}
+
+form.form_style textarea {
+	max-width: 500px;
+}
+
+form.form_style input[type="password"]:focus,
+form.form_style input[type="email"]:focus,
+form.form_style input[type="text"]:focus,
+form.form_style input[type="file"]:focus,
+form.form_style textarea:focus,
+form.form_style select:focus
+{
+	box-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.3) inset, 0pt 0pt 5px rgb(54, 160, 255);
+	border: 1px solid rgb(48, 128, 200);
+	background: none repeat scroll 0% 0% rgb(255, 255, 255);
+}
+
+form.form_style input[type="submit"],
+form.form_style .submit,
+a.form_submit_style,
+button.form_submit_style
+{
+	cursor: pointer;
+	display: inline-block;
+	margin: 0 1px;
+	font-size: 13px;
+	border: 1px solid rgb(148, 175, 189) !important;
+	text-align: center;
+	border-radius: 4px 4px 4px 4px;
+	color: rgb(90, 124, 157) !important;
+	font-weight: bold;
+	box-shadow: 0pt 1px 3px rgba(0, 0, 0, 0.2);
+	background: url("../img/button-bg.jpg") repeat-x scroll left bottom rgb(255, 255, 255);
+	text-shadow: 0pt 1px 0pt rgb(255, 255, 255);
+	padding: 8px;
+	position: relative;
+	/*font-family: Arial,Helvetica,Calibri,sans-serif;*/
+	text-decoration: none;
+}
+
+form.form_style .submit
+{
+	padding: 7px 9px !important;
+}
+
+form.form_style input[type="submit"]:hover,
+form.form_style .submit:hover,
+a.form_submit_style:hover,
+button.form_submit_style:hover
+{
+	background-position: right -156px;
+}
+
+form.form_style input[type="submit"]:active,
+form.form_style .submit:active
+{
+	top: 1px;
+}
+
+form.form_style img
+{
+	border-radius: 5px 5px 5px 5px;
+	box-shadow: 0pt 0pt 5px rgba(255, 255, 255, 0.5);
+	margin-right: 2px;
+	margin-top: 3px;
+	background: none repeat scroll 0% 0% rgba(0, 0, 0, 0.2);
+	border: 1px solid rgba(0, 0, 0, 0.35);
+}
+
+form.form_style p.field
+{
+	margin-top: 4px;
+	margin-bottom: 4px;
+	font-weight: bold;
+	line-height: 20px;
+}
+
+html.ie6 form.form_style input { margin-top: 13px; }
+
+form.form_style table td.label {
+	padding: 4px;
+	vertical-align: middle;
+	font-family: 'Open Sans';
+	font-weight: 200;
+	font-size: 18px;
+}
+
+form.form_style table td.input {
+	padding: 4px;
+	
+}
+
+form.form_style input[type=range] {
+	vertical-align: middle;
 }
