@@ -8,9 +8,17 @@
         <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700,700italic,600italic' rel='stylesheet' type='text/css'>
         <link rel="stylesheet" type="text/css" href="./css/style.css" />
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
+        <script src="./js/easel.js"></script>
+		<script src="./js/musicPlayer.js"></script>
+        <script src="./js/pitchdetect.js"></script>
+     	<script src="./js/songs.js"></script>
+     	<script src="./js/game.js"></script>
         <script type="text/javascript">
 		$(document).ready(function(){
+			
 			$("div[rel=home]").show();
+			window.songId = 0;
 			
 			$("a[rel]").click(function(){
 				$("div[rel]").hide();
@@ -57,8 +65,13 @@
 			});
 			
 			$("a[rel=game]").click(function(){
-				$("div.canvas_frame").css({ "height" : $(window).height() - $("div.game div.bar").height() - 40 + "px" });
+				var sound = "./assets/"+Songs[window.songId].source;
+				$("#sound1").attr('src', sound);
+				$("#note-cont").attr('width', $(window).width()+'px');
+				$("#note-cont").attr('height', $(window).height() - $("div.game div.bar").height() - 80 + "px");
+				$("body").css("background-image", "none").css("background-color", "#555");
 				
+				init();
 				$("div.game div.countdown").delay(1000).queue(function(next){
 						$("div.countdown").show();
 						$("div.countdown div").html("3");
@@ -70,10 +83,9 @@
 						$("div.countdown div").html("1");
 						next();
 					}).delay(1000).queue(function(next){
-						
 						$("div.countdown div").html("GO");
 						$("div.countdown").fadeOut("slow");
-						// START
+						gameStart();
 						next();
 					});
 			});
@@ -93,6 +105,11 @@
 		
 		function configGetSpeed() {
 			return null; // TODO
+		}
+		
+		function gameStart() {
+			musicPlayer('sound1', audio_start);
+			run_game = true;
 		}
 		</script>
     </head>
@@ -142,8 +159,9 @@
                     <div class="option" style="text-align: center;">
                     	<div style="margin-bottom: 10px">Choose Your Song:</div>
                     	<form class="form_style">
-                        	<select style="width: 80%; text-align: center;">
+                        	<select style="width: 80%; text-align: center;" onchange="window.songId = this.value">
                             	<option value="0">Twinkle Twinkle Little Star</option>
+                                <option value="1">Kill Bill Whistle Song</option>
                             </select>
                         </form>
                         <a href="javascript:;" rel="game"><div class="button">Go!</div></a>
@@ -153,9 +171,12 @@
         </div>
         
         <div rel="game" class="game">
-        	<div class="bar">Whistle Hero<a href="javascript:;" rel="home"><div>X</div></a></div>
+        	<div class="bar">Whistle Hero - Score: <span id="score">0</span><a href="javascript:;" rel="home"><div>X</div></a></div>
             <div class="countdown"><div>3</div></div>
-            <div class="canvas_frame"></div>
+            <div class="canvas_frame">
+                <br /><canvas id="note-cont" width="800" height="900" style="background-color: #555;"></canvas>
+                <audio id='sound1' src=""></audio>
+            </div>
         </div>
         
         <div rel="settings" class="settings">
@@ -188,6 +209,15 @@
                     
                     	<form class="form_style">
                     		0 <input type="range" min="0" max="30" value="15" /> 30   <input type="text" rel="range" value="15" style="width: 30px; text-align: center;"/>
+                        </form>
+                    </div>
+                    
+                    <div class="setting">Volume Tolerance</div>
+                    <div class="option">
+                    	Input less than this volume will be ignored.<br /><br />
+                    
+                    	<form class="form_style">
+                    		0 <input type="range" min="16000" max="19000" value="17500" onChange="window.tolerance = this.value" /> 19000   <input type="text" rel="range" value="17500" style="width: 100px; text-align: center;" onChange="window.tolerance = this.value"/>
                         </form>
                     </div>
                 </div>
