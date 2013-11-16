@@ -1,8 +1,10 @@
 Pitch Detection Application
 
+
 Jerry:
 	* Pitch Detection (https://github.com/cwilso/PitchDetect)
 	* Detect within a tolerance (with respect to time and frequency)
+		function judgeFrequency(song, currentBeat, userFrequency)
 
 Daniel:
 	* Draw rectangles on screen corresponding to JSON song.
