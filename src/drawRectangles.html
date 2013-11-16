@@ -46,12 +46,10 @@
       			var s = new createjs.Shape();
             var g = s.graphics;
 
-            // g.setStrokeStyle(15, 'round', 'round');
             g.beginStroke("#000");
             g.beginFill("#F00");
             g.drawRect(rect.x, rect.y, rect.width, rect.height);
             g.endFill();
-            // g.setStrokeStyle(1, 'round', 'round');
 
             return s;
     		}
