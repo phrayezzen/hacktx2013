@@ -3,16 +3,17 @@
 </head>
 <script src="./js/easel.js"></script>
 <script>
-		var mySong = {
-				bpm : 120,
-				title : "Song name",
-				notes : [["C",2], ["E",4], ["D",3], ["B", 3]]
-			};
+	var mySong = {
+		bpm : 120,
+		title : "Song name",
+		notes : [["C",2], ["E",4], ["D",3], ["B", 3]]
+	};
         var INIT_X = 100;
         var VERT_SPACING = 50;
         var BEAT_LENGTH = 30;
 
         var canvas, width, height;
+	var notes;
         var stage;
         function init() {
             canvas = document.getElementById('note-cont');
@@ -35,14 +36,24 @@
 
             stage = new createjs.Stage(canvas);
 
+	    notes = [];
             for (var i = 0; i < rects.length; i++) {
               var s = drawRectangle(rects[i]);
+		notes.push(s);
               stage.addChild(s);
             }
 
-      			stage.update();
+		stage.update();
+		createjs.Ticker.addListener(window);
            
         }
+
+	function tick() {
+		for(var i = 0; i < notes.length; i++) {
+			notes[i].x -= 1;
+		}
+		stage.update();
+	}
 
         function getXCoordFromBeat(beat) {
           var HORIZ_OFFSET = 20;
@@ -85,7 +96,7 @@
             g.endFill();
 
             return s;
-    		}
+	}
 
 </script>
 
