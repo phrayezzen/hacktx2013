@@ -80,9 +80,6 @@ var mySong = Songs[0];
               var width = noteLength * BEAT_LENGTH_SIZE - 2;
               var height = NOTE_TOL;
               rects.push(new createjs.Rectangle(0, y + (NOTE_TOL/2), width, height));
-              console.log(y);
-              console.log("BUH");
-              console.log(note[0] + note[2])
 	            rects[i].mahX = x;
               beat += noteLength; // offset next note starting beat
 	            curColor[i] = DEFAULT_COLOR;
@@ -146,7 +143,7 @@ var mySong = Songs[0];
 				      score_multipler *= 2;
 				      score_combo = 0;
 			    }
-						score += 1 * score_multipler;
+						score += score_multipler;
 						newColor = BINGO_COLOR;
 					} else {
             score_break += 1;
