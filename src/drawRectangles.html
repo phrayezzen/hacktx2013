@@ -19,6 +19,7 @@
         var VERT_SPACING;
         var BEAT_LENGTH_SIZE = 120;
         var NUM_NOTES = 7;
+        var NOTE_TOL = 20;
 
         var canvas, width, height;
       	var notes;
@@ -55,7 +56,7 @@
               var y = getYCoordFromNote(note[0]); // pitch
               var x = getXCoordFromBeat(beat);
               var width = noteLength * BEAT_LENGTH_SIZE - 2;
-              var height = 10;
+              var height = NOTE_TOL;
               rects.push(new createjs.Rectangle(x, y, width, height));
               beat += noteLength; // offset next note starting beat
             }
