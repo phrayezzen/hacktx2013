@@ -6,7 +6,7 @@
 		var mySong = {
 				bpm : 120,
 				title : "Song name",
-				notes : [[1,2], [3,4], [2,3]]
+				notes : [["C",2], ["E",4], ["D",3], ["B", 3]]
 			};
         var INIT_X = 100;
         var VERT_SPACING = 50;
@@ -20,14 +20,16 @@
             height = canvas.height;
 
             var rects = new Array();
-            var x = INIT_X;
+            var beat = 0;
             for (var i = 0; i < mySong.notes.length; i++) {
             	note = mySong.notes[i];
-              var y = note[0]*VERT_SPACING; // pitch
-              var width = note[1]*BEAT_LENGTH;
+              var noteLength = note[1];
+              var y = getYCoordFromNote(note[0]); // pitch
+              var x = getXCoordFromBeat(beat);
+              var width = noteLength * BEAT_LENGTH;
               var height = 10;
               rects.push(new createjs.Rectangle(x, y, width, height));
-              x += width; // offset next note
+              beat += noteLength; // offset next note starting beat
             }
             console.log(rects);
 
@@ -40,6 +42,37 @@
 
       			stage.update();
            
+        }
+
+        function getXCoordFromBeat(beat) {
+          var HORIZ_OFFSET = 20;
+          return beat * BEAT_LENGTH + HORIZ_OFFSET;
+        }
+
+        function getYCoordFromNote(note){
+          var pos;
+          var OFFSET = 100;
+          if (note == "C") {
+            pos = 0;
+          } else if (note == "D") {
+            pos = 1;
+          } else if (note == "E") {
+            pos = 2;
+          } else if (note == "F") {
+            pos = 3;
+          } else if (note == "G") {
+            pos = 4;
+          } else if (note == "A") {
+            pos = 5;
+          }  else if (note == "B") {
+            pos = 6;
+          } else {
+            console.log("Invalid note");
+            return null;
+          }
+
+          // * VERT_SPACING
+          return pos * VERT_SPACING + OFFSET;
         }
 
         function drawRectangle(rect) {
@@ -57,7 +90,7 @@
 </script>
 
 <body onload="init();">
-	<canvas id="note-cont" style="background:#666;" width="960" height="400"></canvas>
+	<canvas id="note-cont" style="background:#666;" width="900" height="900"></canvas>
 </body>
 
 </HTML>
