@@ -73,14 +73,17 @@ var mySong = Songs[0];
               var x = getXCoordFromBeat(beat);
               var width = noteLength * BEAT_LENGTH_SIZE - 2;
               var height = NOTE_TOL;
-              rects.push(new createjs.Rectangle(0, y + (width/2), width, height));
+              rects.push(new createjs.Rectangle(0, y + (NOTE_TOL/2), width, height));
+              console.log(y);
+              console.log("BUH");
+              console.log(note[0] + note[2])
 	            rects[i].mahX = x;
               beat += noteLength; // offset next note starting beat
 	            curColor[i] = DEFAULT_COLOR;
             }
             //console.log(rects);
 
-      	    NUM_NOTES *= maxOctave;
+      	    NUM_NOTES *= maxOctave + 1;
             notes = [];
             for (var i = 0; i < rects.length; i++) {
               var s = drawRectangle(rects[i], DEFAULT_COLOR);
@@ -201,7 +204,7 @@ var mySong = Songs[0];
             return null;
           }
 
-          return (pos + 6 * octave) * VERT_SPACING;
+          return (pos - 6 * octave) * VERT_SPACING;
         }
 
         function drawRectangle(rect, color) {
