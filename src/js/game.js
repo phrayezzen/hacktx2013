@@ -5,7 +5,8 @@ var mySong = Songs[0];
         var INIT_X = 100;
         var VERT_SPACING;
         var BEAT_LENGTH_SIZE = 120;
-        var NUM_NOTES = 12;
+        var NUM_NOTES = 24;
+        var NUM_OCTAVES = 2;
         var NOTE_TOL = 50;
 	var DEFAULT_COLOR = "#F5B800";
 	var DO_IT_COLOR = "#F00";
@@ -94,7 +95,6 @@ var mySong = Songs[0];
               }
             }
 
-      	    NUM_NOTES *= maxOctave + 1;
             notes = [];
             for (var i = 0; i < rects.length; i++) {
               var s = drawRectangle(rects[i], DEFAULT_COLOR);
@@ -122,8 +122,8 @@ var mySong = Songs[0];
 		if(run_game) { 
 			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
 			var y_val = canvas.height - (userPitch / 4);
-		        //y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
-				y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 600;
+				y_val = 1.51 * 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 190; // twinkle
+        // y_val = 2.9 * 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 250; // kill bill
 			if( !isNaN(y_val) ) {
 				userPitchCircle.y = y_val;
 			}
@@ -187,35 +187,35 @@ var mySong = Songs[0];
           var pos;
           //console.log(height);
           if (note == "C" || note == "B#") {
-            pos = 6;
+            pos = 11;
           } else if (note == "C#" || note == "Db") {
-            pos = 5.5;
+            pos = 10;
           } else if (note == "D") {
-            pos = 5;
+            pos = 9;
           } else if (note == "D#" || note == "Eb") {
-            pos = 4.5;
+            pos = 8;
           } else if (note == "E" || note == "Fb") {
-            pos = 4;
+            pos = 7;
           } else if (note == "F" || note == "E#") {
-            pos = 3.5;
+            pos = 6;
           } else if (note == "F#" || note == "Gb") {
-            pos = 3;
+            pos = 5;
           } else if (note == "G") {
-            pos = 2.5;
+            pos = 4;
           } else if (note == "G#" || note == "Ab") {
-            pos = 2;
+            pos = 3;
           } else if (note == "A") {
-            pos = 1.5;
+            pos = 1.1;
           } else if (note == "A#" || note == "Bb") {
             pos = 1;
           }  else if (note == "B" || note == "Cb") {
-            pos = 0.5;
+            pos = 0;
           } else {
             console.log("Invalid note");
             return null;
           }
 
-          return (pos - 6 * octave) * VERT_SPACING;
+          return pos * VERT_SPACING + ((NUM_OCTAVES-1) - (octave + 1)) * (11 * VERT_SPACING);
         }
 
         function drawRectangle(rect, color) {
