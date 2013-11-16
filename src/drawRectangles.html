@@ -13,7 +13,7 @@
 						 ["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],
 						 ["C",1],["C",1],["G",1],["G",1],["A",1],["A",1],["G",2],["F",1],["F",1],["E",1],["E",1],["D",1],["D",1],["C",2]]
 				};
-
+	var run_game = false;
         var FRAME_RATE = 60;
         var INIT_X = 100;
         var VERT_SPACING;
@@ -28,20 +28,24 @@
       	var lineX;
       	var userPitch;
       	var userPitchWasUndefined;
+	var rects;
+        var markerX;
+	var highlighted;
 
         function init() {
             canvas = document.getElementById('note-cont');
             width = canvas.width;
             height = canvas.height;
-        		userPitchLine = new createjs.Shape();
-        		userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100).lineTo(200,200);
+	    userPitchLine = new createjs.Shape();
+            userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100);
+            markerX = 1/4*width;
+	    toggleLiveInput();
 		
             VERT_SPACING = height / NUM_NOTES;
             stage = new createjs.Stage(canvas);
             createjs.Ticker.setFPS(FRAME_RATE);
 
             var curTimeMarker = new createjs.Shape();
-            var markerX = 1/4*width;
             lineX = markerX;
             var g = curTimeMarker.graphics;
             g.beginFill("#FFF");
@@ -49,7 +53,7 @@
             g.endFill();
             stage.addChild(curTimeMarker);
 
-            var rects = new Array();
+            rects = new Array();
             var beat = 0;
             for (var i = 0; i < mySong.notes.length; i++) {
             	note = mySong.notes[i];
@@ -58,15 +62,18 @@
               var x = getXCoordFromBeat(beat);
               var width = noteLength * BEAT_LENGTH_SIZE - 2;
               var height = NOTE_TOL;
-              rects.push(new createjs.Rectangle(x, y, width, height));
+              rects.push(new createjs.Rectangle(0, y, width, height));
+	      rects[i].mahX = x;
               beat += noteLength; // offset next note starting beat
             }
+	    highlighted = Array(rects.length);
             console.log(rects);
 
       	    notes = [];
             for (var i = 0; i < rects.length; i++) {
-              var s = drawRectangle(rects[i]);
-          		notes.push(s);
+              var s = drawRectangle(rects[i], "#F00");
+	      notes.push(s);
+	      notes[i].x = rects[i].mahX;
               stage.addChild(s);
             }
 
@@ -81,6 +88,15 @@
 			var moveSpeed = 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
 			for(var i = 0; i < notes.length; i++) {
 				notes[i].x -= moveSpeed;
+				var intersectingLine = (markerX > notes[i].x && markerX < (notes[i].x + rects[i].width));
+				if( !highlighted[i] && intersectingLine ) { 
+					highlighted[i] = true;
+					notes[i].graphics.clear().beginFill("#0F0").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+				}
+				if( highlighted[i] && !intersectingLine ) {
+					highlighted[i] = false;
+					notes[i].graphics.clear().beginFill("#F00").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+				}
 			}
 			userPitchLine.x -= moveSpeed;
 			lineX += moveSpeed;
@@ -127,22 +143,21 @@
           return pos * VERT_SPACING + OFFSET;
         }
 
-        function drawRectangle(rect) {
-      			var s = new createjs.Shape();
+        function drawRectangle(rect, color) {
+	    var s = new createjs.Shape();
             var g = s.graphics;
 
             g.beginStroke("#000");
-            g.beginFill("#F00");
+            g.beginFill(color);
             g.drawRect(rect.x, rect.y, rect.width, rect.height);
             g.endFill();
 
             return s;
-				}
+	}
 
 </script>
 
 <body onload="init();">
-	<button onclick="toggleLiveInput()">Start!</button>  
 	<button onclick="run_game = true;">Start!</button>  
   <br />
   <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
