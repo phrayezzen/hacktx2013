@@ -1,4 +1,7 @@
-function musicPlayer(soundobj) {
+function musicPlayer(soundobj, waitTime) {
   var thissound=document.getElementById(soundobj);
-  thissound.play();
+	window.setTimeout( function(){ 
+		console.log("PLAY");
+	  thissound.play();
+	}, waitTime * 1000);
 }
