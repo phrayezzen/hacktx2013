@@ -24,7 +24,7 @@
       	var notes;
         var stage;
       	var userPitch;
-        
+
         function init() {
             canvas = document.getElementById('note-cont');
             width = canvas.width;
@@ -123,13 +123,11 @@
 </script>
 
 <body onload="init();">
-<<<<<<< HEAD
-	<canvas id="note-cont" style="background:#666;" width="1600" height="900"></canvas>
-=======
 	<button onclick="toggleLiveInput()">Start!</button>
-	<canvas id="note-cont" style="background:#666;" width="900" height="900"></canvas>
-	<input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
->>>>>>> de3c75181db8c1e921b668fc94694133cfa049b7
+  <br />
+  <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
+  <br />
+	<canvas id="note-cont" style="background:#666;" width="1600" height="900"></canvas>
 </body>
 
 </HTML>
