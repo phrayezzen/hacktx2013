@@ -29,6 +29,8 @@
       	var userPitch;
       	var userPitchWasUndefined;
 
+        // 12 * (Math.log(frequency / 440) / Math.log(2) ) // + 69
+
         function init() {
             canvas = document.getElementById('note-cont');
             width = canvas.width;
@@ -56,9 +58,9 @@
               var noteLength = note[1];
               var y = getYCoordFromNote(note[0]); // pitch
               var x = getXCoordFromBeat(beat);
-              var width = noteLength * BEAT_LENGTH_SIZE - 2;
-              var height = NOTE_TOL;
-              rects.push(new createjs.Rectangle(x, y, width, height));
+              var rectWidth = noteLength * BEAT_LENGTH_SIZE - 2;
+              var rectHeight = NOTE_TOL;
+              rects.push(new createjs.Rectangle(x, y, rectWidth, rectHeight));
               beat += noteLength; // offset next note starting beat
             }
             console.log(rects);
@@ -97,13 +99,12 @@
       	}
 
         function getXCoordFromBeat(beat) {
-          var HORIZ_OFFSET = 2/9 * canvas.width;
+          var HORIZ_OFFSET = canvas.width;
           return beat * BEAT_LENGTH_SIZE + HORIZ_OFFSET;
         }
 
         function getYCoordFromNote(note){
           var pos;
-          var OFFSET = 2/9 * canvas.height;
           console.log(height);
           if (note == "C") {
             pos = 6;
@@ -124,7 +125,7 @@
             return null;
           }
 
-          return pos * VERT_SPACING + OFFSET;
+          return pos * VERT_SPACING;
         }
 
         function drawRectangle(rect) {
