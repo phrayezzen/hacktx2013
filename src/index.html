@@ -16,7 +16,64 @@
 				$("div[rel]").hide();
 				$("div[rel="+$(this).attr("rel")+"]").fadeIn("slow");
 			});
+			
+			// Smart Range-Handling
+			$("input[type=range]").on('input', function() {
+				$(this).closest("form").find("input[rel=range]").val( $(this).val() );
+			});
+			
+			$("input[rel=range]").keyup(function() {
+				$(this).closest("form").find("input[type=range]").val( $(this).val() );
+			});
+			
+			// Score Resets
+			$("a[action=scores_reset]").click(function(){
+				$(".scores").find("table").find("tbody").html("<tr><td colspan=\"3\">You have no scores to display.</td></tr>");
+				// TODO: CLEAR LOCAL STORAGE
+			});
+			
+			$("a[rel=scores]").click(function(){
+				// TODO: REFRESH SCORES TABLE
+			});
+			
+			$("a[rel=game]").click(function(){
+				$("div.canvas_frame").css({ "height" : $(window).height() - $("div.game div.bar").height() - 40 + "px" });
+				
+				$("div.game div.countdown").delay(1000).queue(function(next){
+						$("div.countdown").show();
+						$("div.countdown div").html("3");
+						next();
+					}).delay(1000).queue(function(next){
+						$("div.countdown div").html("2");
+						next();
+					}).delay(1000).queue(function(next){
+						$("div.countdown div").html("1");
+						next();
+					}).delay(1000).queue(function(next){
+						
+						$("div.countdown div").html("GO");
+						$("div.countdown").fadeOut("slow");
+						// START
+						next();
+					});
+			});
 		});
+		
+		function appendToScores(score, songTitle) {
+			// TODO
+		}
+		
+		function configGetTimeTolerance() {
+			return null; // TODO
+		}
+		
+		function configGetPitchTolerance() {
+			return null; // TODO
+		}
+		
+		function configGetSpeed() {
+			return null; // TODO
+		}
 		</script>
     </head>
     <body>
@@ -25,43 +82,104 @@
         	<div class="menu">
             	<div class="title">Whistle Hero</div>
                 <div class="box">
-                	<a href="javascript:;" rel="game"><div>New Game</div></a>
+                	<a href="javascript:;" rel="new_game"><div>New Game</div></a>
                     <a href="javascript:;" rel="scores"><div>High Scores</div></a>
                     <a href="javascript:;" rel="settings"><div>Settings</div></a>
                     <a href="javascript:;" rel="instructions"><div>Instructions</div></a>
                 </div>
             </div>
             
-            <div class="credits"></div>
+            <div class="credits">Created by Matt, X, Daniel, Jonathan, &amp; Abdul</div>
         </div>
         
         <div rel="scores" class="scores">
         	<div class="menu">
             	<div class="title">High Scores<a rel="home"><div>X</div></a></div>
                 <div class="box">
-                	asdf
+                	<table class="grid">
+                    	<thead>
+                            <tr>
+                                <th>Score</th>
+                                <th>Song</th>
+                                <th>Date</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td colspan="3">You have no scores to display.</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <a href="javascript:;" action="scores_reset"><div class="button">Reset Scores</div></a>
+                </div>
+            </div>
+        </div>
+        
+        <div rel="new_game" class="new_game">
+        	<div class="menu">
+            	<div class="title">New Game<a rel="home"><div>X</div></a></div>
+                <div class="box">
+                    <div class="option" style="text-align: center;">
+                    	<div style="margin-bottom: 10px">Choose Your Song:</div>
+                    	<form class="form_style">
+                        	<select style="width: 80%; text-align: center;">
+                            	<option value="0">Twinkle Twinkle Little Star</option>
+                            </select>
+                        </form>
+                        <a href="javascript:;" rel="game"><div class="button">Go!</div></a>
+                    </div>
                 </div>
             </div>
         </div>
         
         <div rel="game" class="game">
-        	game
+        	<div class="bar">Whistle Hero<a href="javascript:;" rel="home"><div>X</div></a></div>
+            <div class="countdown"><div>3</div></div>
+            <div class="canvas_frame"></div>
         </div>
         
         <div rel="settings" class="settings">
         	<div class="menu">
             	<div class="title">Settings<a rel="home"><div>X</div></a></div>
                 <div class="box">
-                	asdf
+                	<div class="setting">Speed</div>
+                    <div class="option">
+                    	This option controls the speed at which songs play. You can use this to change the difficulty of the game.<br /><br />
+                    
+                    	<form class="form_style">
+                        	Multiplier: <select style="width: 200px;">
+                            	<option value="1.0">Normal (1.0x)</option>
+                            </select>
+                        </form>
+                        
+                    </div>
+                    
+                    <div class="setting">Time Tolerance</div>
+                    <div class="option">
+                    	This option changes the time period in which you can whistle to receive credit for a particular note.<br /><br />	
+                    	<form class="form_style">
+                    		0 <input type="range" min="0" max="30" value="15" /> 30  <input type="text" rel="range" value="15" style="width: 30px; text-align: center;"/>
+                        </form>
+                    </div>
+                    
+                    <div class="setting">Pitch Tolerance</div>
+                    <div class="option">
+                    	This option changes the range of the pitches that are accepted for a particular note.<br /><br />
+                    
+                    	<form class="form_style">
+                    		0 <input type="range" min="0" max="30" value="15" /> 30   <input type="text" rel="range" value="15" style="width: 30px; text-align: center;"/>
+                        </form>
+                    </div>
                 </div>
             </div>
+        	<div style="margin-bottom: 100px">&nbsp;</div>
         </div>
         
         <div rel="instructions" class="instructions">
         	<div class="menu">
             	<div class="title">Instructions<a rel="home"><div>X</div></a></div>
                 <div class="box">
-                	asdf
+                	Coming Soon!
                 </div>
             </div>
         </div>
