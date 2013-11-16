@@ -396,6 +396,7 @@ form.form_style input[type="file"] {
 
 form.form_style select {
 	max-width: 360px;
+	/8-webkit-appearance: none;*/
 }
 
 form.form_style textarea {
