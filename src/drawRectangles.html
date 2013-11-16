@@ -17,7 +17,7 @@
         var FRAME_RATE = 60;
         var INIT_X = 100;
         var VERT_SPACING;
-        var BEAT_LENGTH = 60;
+        var BEAT_LENGTH_SIZE = 120;
         var NUM_NOTES = 7;
 
         var canvas, width, height;
@@ -48,7 +48,7 @@
               var noteLength = note[1];
               var y = getYCoordFromNote(note[0]); // pitch
               var x = getXCoordFromBeat(beat);
-              var width = noteLength * BEAT_LENGTH - 2;
+              var width = noteLength * BEAT_LENGTH_SIZE - 2;
               var height = 10;
               rects.push(new createjs.Rectangle(x, y, width, height));
               beat += noteLength; // offset next note starting beat
@@ -69,7 +69,7 @@
 
       	function tick() {
       		for (var i = 0; i < notes.length; i++) {
-      			notes[i].x -= 2 * BEAT_LENGTH / FRAME_RATE;
+      			notes[i].x -= 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
       		}
       		if (userPitch !== undefined){
       			// console.log(userPitch);
@@ -79,7 +79,7 @@
 
         function getXCoordFromBeat(beat) {
           var HORIZ_OFFSET = 2/9 * canvas.width;
-          return beat * BEAT_LENGTH + HORIZ_OFFSET;
+          return beat * BEAT_LENGTH_SIZE + HORIZ_OFFSET;
         }
 
         function getYCoordFromNote(note){
@@ -123,7 +123,7 @@
 </script>
 
 <body onload="init();">
-	<button onclick="toggleLiveInput()">Start!</button>
+	<button onclick="toggleLiveInput()">Start!</button>  
   <br />
   <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
   <br />
