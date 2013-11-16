@@ -23,10 +23,10 @@
         var canvas, width, height;
       	var notes;
         var stage;
-      	var userPitch;
       	var userPitchLine;
       	var lineX = 200;
       	var userPitch;
+      	var userPitchWasUndefined;
 
         function init() {
             canvas = document.getElementById('note-cont');
@@ -75,16 +75,22 @@
         }
 
       	function tick() {
-      		var moveSpeed = 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
-      		for(var i = 0; i < notes.length; i++) {
-      			notes[i].x -= moveSpeed;
-      		}
-      		userPitchLine.x -= moveSpeed;
-      		lineX += moveSpeed;
-      		if(userPitch !== undefined){
-      			userPitchLine.graphics.lineTo(lineX, userPitch / 8);
-      //			console.log(userPitch);
-      		}
+		if(run_game) { 
+			var moveSpeed = 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
+			for(var i = 0; i < notes.length; i++) {
+				notes[i].x -= moveSpeed;
+			}
+			userPitchLine.x -= moveSpeed;
+			lineX += moveSpeed;
+			var y_val = canvas.height - (userPitch / 2);
+			if(userPitch !== undefined){
+				userPitchLine.graphics.lineTo(lineX, y_val);
+				console.log( noteStrings[noteFromPitch(userPitch) % 12] );
+			} else {
+				userPitchLine.graphics.moveTo(lineX, canvas.height);
+				userPitchWasUndefined = true;
+			}
+		}
       		stage.update();
       	}
 
@@ -135,6 +141,7 @@
 
 <body onload="init();">
 	<button onclick="toggleLiveInput()">Start!</button>  
+	<button onclick="run_game = true;">Start!</button>  
   <br />
   <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
   <br />
