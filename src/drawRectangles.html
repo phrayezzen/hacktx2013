@@ -18,11 +18,15 @@
       	var notes;
         var stage;
 	var userPitch;
+	var userPitchLine;
+	var lineX = 200;
         function init() {
             canvas = document.getElementById('note-cont');
             width = canvas.width;
             height = canvas.height;
-
+		userPitchLine = new createjs.Shape();
+		userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100).lineTo(200,200);
+		
             var rects = new Array();
             var beat = 0;
             for (var i = 0; i < mySong.notes.length; i++) {
@@ -46,16 +50,21 @@
               stage.addChild(s);
             }
 
+              stage.addChild(userPitchLine);
       		stage.update();
       		createjs.Ticker.addListener(window);
            
         }
 
 	function tick() {
+		var moveSpeed = 1 * (mySong.bpm / 120);
 		for(var i = 0; i < notes.length; i++) {
-			notes[i].x -= 1 * (mySong.bpm / 120);
+			notes[i].x -= moveSpeed;
 		}
+		userPitchLine.x -= moveSpeed;
+		lineX += moveSpeed;
 		if(userPitch !== undefined){
+			userPitchLine.graphics.lineTo(lineX, userPitch / 8);
 //			console.log(userPitch);
 		}
 		stage.update();
