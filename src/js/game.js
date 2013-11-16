@@ -62,6 +62,8 @@ var mySong = Songs[0];
             rects = new Array();
             maxOctave = 0;
             var beat = 0;
+            var min = 0;
+            var negative = false;
 	          curColor = Array(mySong.notes.length);
             for (var i = 0; i < mySong.notes.length; i++) {
             	note = mySong.notes[i];
@@ -70,6 +72,10 @@ var mySong = Songs[0];
               }
               var noteLength = note[1];
               var y = getYCoordFromNote(note[0], note[2]); // pitch
+              if (y < min) {
+                negative = true;
+                min = y;
+              }
               var x = getXCoordFromBeat(beat);
               var width = noteLength * BEAT_LENGTH_SIZE - 2;
               var height = NOTE_TOL;
@@ -82,6 +88,11 @@ var mySong = Songs[0];
 	            curColor[i] = DEFAULT_COLOR;
             }
             //console.log(rects);
+            if (negative) {
+              for (var i = 0; i < rects.length; i++) {
+                rects[i].y -= min;
+              }
+            }
 
       	    NUM_NOTES *= maxOctave + 1;
             notes = [];
