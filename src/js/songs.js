@@ -16,7 +16,7 @@ var Notes = {
 
 var Songs = [
 	{
-				startTime : 0,
+				startTime : 0.56,
                 bpm :  94.79
                 title : "Twinkle Twinkle Little Star",
                 notes : [[C,1],[C,1],[G,1],[G,1],[A,1],[A,1],[G,2],[F,1],[F,1],[E,1],[E,1],[D,1],[D,1],[C,2],
