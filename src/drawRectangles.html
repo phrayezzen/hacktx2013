@@ -40,6 +40,7 @@
       	var notes;
         var stage;
       	var userPitchLine;
+      	var userPitchCircle;
       	var lineX;
       	var userPitch;
       	var userPitchWasUndefined;
@@ -57,8 +58,13 @@
             height = canvas.height;
 	    userPitchLine = new createjs.Shape();
             userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100);
+	    userPitchCircle = new createjs.Shape();
+    	    userPitchCircle.graphics.beginStroke("red").drawCircle(0, 0, 40);
+	    userPitchCircle.x = markerX;
 	moveSpeed = (mySong.bpm / 60) * (BEAT_LENGTH_SIZE / FRAME_RATE);
         markerX = 1/4*width;
+	    userPitchCircle.x = markerX;
+	    userPitchCircle.y = 100;
 	audio_start = (((canvas.width - markerX) / moveSpeed) / 60) - mySong.startTime;
 	    toggleLiveInput();
 		
@@ -99,6 +105,7 @@
             }
 
               stage.addChild(userPitchLine);
+              stage.addChild(userPitchCircle);
       		stage.update();
       		createjs.Ticker.addListener(window);
            
@@ -111,6 +118,9 @@
 			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
 			var y_val = canvas.height - (userPitch / 4);
 		        y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
+			if( !isNaN(y_val) ) {
+				userPitchCircle.y = y_val;
+			}
 			for(var i = 0; i < notes.length; i++) {
 				notes[i].x -= moveSpeed;
 				var intersectingLine = (markerX > notes[i].x && markerX < (notes[i].x + rects[i].width));
