@@ -1,7 +1,27 @@
-var mySong = Songs[0];
+<HTML>
+<head>
+	<script src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
+	<script src="./js/easel.js"></script>
+	<script src="./js/musicPlayer.js"></script>
+	<script src="./js/pitchdetect.js"></script>
+  <script src="./js/songs.js"></script>
+</head>
+
+<body onload="init();">
+	<button onclick="musicPlayer('sound1', audio_start); run_game = true;">Start!</button>  
+
+  <br />
+	Score: <p id="score"></p>
+  <br />
+  <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
+  <br />
+	<canvas id="note-cont" style="background:#666;" width="1600" height="900"></canvas>
+	<audio id='sound1' src="assets/KillBill.mp3"></audio>
+<script>
+				var mySong = Songs[0];
 
 	var run_game = false;
-        var FRAME_RATE = 60;
+        var FRAME_RATE = 30;
         var INIT_X = 100;
         var VERT_SPACING;
         var BEAT_LENGTH_SIZE = 120;
@@ -20,32 +40,28 @@ var mySong = Songs[0];
       	var userPitch;
       	var userPitchWasUndefined;
 	var rects;
-  var maxOctave;
         var markerX;
 	var highlighted;
 	var moveSpeed;
 	var audio_start;
-	var score_container = document.getElementById("score");
-	var curColor; 
 
         // 12 * (Math.log(frequency / 440) / Math.log(2) ) // + 69
 
         function init() {
-			      mySong = Songs[window.songId];
             canvas = document.getElementById('note-cont');
             width = canvas.width;
             height = canvas.height;
-	          userPitchLine = new createjs.Shape();
+	    userPitchLine = new createjs.Shape();
             userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100);
-	          userPitchCircle = new createjs.Shape();
-    	      userPitchCircle.graphics.beginStroke("red").drawCircle(0, 0, 40);
-	          userPitchCircle.x = markerX;
-	          moveSpeed = (mySong.bpm / 60) * (BEAT_LENGTH_SIZE / FRAME_RATE);
-            markerX = 1/4*width;
-	          userPitchCircle.x = markerX;
-	          userPitchCircle.y = 100;
-	          audio_start = (((canvas.width - markerX) / moveSpeed) / 60) - mySong.startTime;
-	          toggleLiveInput();
+	    userPitchCircle = new createjs.Shape();
+    	    userPitchCircle.graphics.beginStroke("red").drawCircle(0, 0, 40);
+	    userPitchCircle.x = markerX;
+	moveSpeed = (mySong.bpm / 60) * (BEAT_LENGTH_SIZE / FRAME_RATE);
+        markerX = 1/4*width;
+	    userPitchCircle.x = markerX;
+	    userPitchCircle.y = 100;
+	audio_start = (((canvas.width - markerX) / moveSpeed) / 60) - mySong.startTime;
+	    toggleLiveInput();
 		
             VERT_SPACING = height / NUM_NOTES;
             stage = new createjs.Stage(canvas);
@@ -60,47 +76,27 @@ var mySong = Songs[0];
             stage.addChild(curTimeMarker);
 
             rects = new Array();
-            maxOctave = 0;
             var beat = 0;
-            var min = 0;
-            var negative = false;
-	          curColor = Array(mySong.notes.length);
             for (var i = 0; i < mySong.notes.length; i++) {
             	note = mySong.notes[i];
-              if (note[2] > maxOctave) {
-                maxOctave = note[2];
-              }
               var noteLength = note[1];
-              var y = getYCoordFromNote(note[0], note[2]); // pitch
-              if (y < min) {
-                negative = true;
-                min = y;
-              }
+              var y = getYCoordFromNote(note[0]); // pitch
               var x = getXCoordFromBeat(beat);
               var width = noteLength * BEAT_LENGTH_SIZE - 2;
               var height = NOTE_TOL;
-              rects.push(new createjs.Rectangle(0, y + (NOTE_TOL/2), width, height));
-              console.log(y);
-              console.log("BUH");
-              console.log(note[0] + note[2])
-	            rects[i].mahX = x;
+              rects.push(new createjs.Rectangle(0, y + (width/2), width, height));
+	      rects[i].mahX = x;
               beat += noteLength; // offset next note starting beat
-	            curColor[i] = DEFAULT_COLOR;
             }
-            //console.log(rects);
-            if (negative) {
-              for (var i = 0; i < rects.length; i++) {
-                rects[i].y -= min;
-              }
-            }
+	    highlighted = Array(rects.length);
+            console.log(rects);
 
-      	    NUM_NOTES *= maxOctave + 1;
-            notes = [];
+      	    notes = [];
             for (var i = 0; i < rects.length; i++) {
               var s = drawRectangle(rects[i], DEFAULT_COLOR);
-	          notes.push(s);
-	          notes[i].x = rects[i].mahX;
-            stage.addChild(s);
+	      notes.push(s);
+	      notes[i].x = rects[i].mahX;
+              stage.addChild(s);
             }
 
               stage.addChild(userPitchLine);
@@ -108,22 +104,18 @@ var mySong = Songs[0];
       		stage.update();
       		createjs.Ticker.addListener(window);
            
-		setInterval(function() { 
-			score_container.innerHTML = "" + score + " Combo: " + score_multipler + "x";
-		}, 1000);
         }
 
+	var score_container = document.getElementById("score");
 	var score = 0;
-	  var score_break = 0;
-	  var score_combo = 0;
-	  var score_multipler = 1;
-	var curColor = DEFAULT_COLOR;
+  var score_multiplier = 1;
+  var score_combo = 0;
+  var score_break = 0;
       	function tick() {
 		if(run_game) { 
 			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
 			var y_val = canvas.height - (userPitch / 4);
-		        //y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
-				y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 600;
+		        y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
 			if( !isNaN(y_val) ) {
 				userPitchCircle.y = y_val;
 			}
@@ -131,45 +123,36 @@ var mySong = Songs[0];
 				notes[i].x -= moveSpeed;
 				var intersectingLine = (markerX > notes[i].x && markerX < (notes[i].x + rects[i].width));
 				var intune = (y_val > rects[i].y && y_val < (rects[i].y + rects[i].height));
-				var newColor = DEFAULT_COLOR;
-				if( intersectingLine ) {
-					var ydiff =  Math.abs( y_val - (rects[i].y + (rects[i].height/2)) );
-					if( !isNaN(ydiff) ) {
-						var col = (parseInt("FF0000", 16) + ydiff).toString(16).substr(0, 6);
-						console.log(col);
-						userPitchCircle.graphics.clear().beginStroke("#" + col).drawCircle(0, 0, 40);
-					}
-					newColor = DO_IT_COLOR;
-					if( intune ) {
-				    score_break = 0;
-				    score_combo += 1;
-				    if (score_combo > 15) {
-				      score_multipler *= 2;
-				      score_combo = 0;
-			    }
-						score += 1 * score_multipler;
-						newColor = BINGO_COLOR;
-					} else {
-            score_break += 1;
-            if (score_break > 3) {
-              score_break = 0;
-              score_combo = 0;
-              score_multipler = 1;
-            }
+				if( !highlighted[i] && intersectingLine ) { 
+					highlighted[i] = true;
+					notes[i].graphics.clear().beginStroke("#000").beginFill(DO_IT_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+				}
+				if( highlighted[i] && !intersectingLine ) {
+          score_break += 1;
+          if(score_break > 10) {
+            score_break = 0;
+            score_multiplier = 1;
+            score_combo = 0;
           }
+					highlighted[i] = false;
+					notes[i].graphics.clear().beginStroke("#000").beginFill(DEFAULT_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
 				}
-				if( newColor != curColor[i] ){
-					notes[i].graphics.clear().beginStroke("#000").beginFill(newColor).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
-					curColor[i] = newColor;
+				if(intune && highlighted[i]){
+          score_break = 0;
+          score_combo += 1;
+          if (score_combo > 10) {
+            score_multipler += 1;
+            score_combo = 0;
+          }
+					score += 1 * score_multiplier;
+					score_container.innerHTML = "" + score + "  Combo: " + score_multiplier + "x";
+					notes[i].graphics.clear().beginStroke("#000").beginFill(BINGO_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
 				}
-
 			}
 			userPitchLine.x -= moveSpeed;
 			lineX += moveSpeed;
 			if(userPitch !== undefined){
-				if( !isNaN(y_val) ) {
-					userPitchLine.graphics.lineTo(lineX, y_val);
-				}
+				userPitchLine.graphics.lineTo(lineX, y_val);
 				//console.log( noteStrings[noteFromPitch(userPitch) % 12] );
 			} else {
 				// userPitchLine.graphics.moveTo(lineX, canvas.height);
@@ -184,7 +167,7 @@ var mySong = Songs[0];
           return beat * BEAT_LENGTH_SIZE + HORIZ_OFFSET;
         }
 
-        function getYCoordFromNote(note, octave){
+        function getYCoordFromNote(note){
           var pos;
           //console.log(height);
           if (note == "C" || note == "B#") {
@@ -216,7 +199,7 @@ var mySong = Songs[0];
             return null;
           }
 
-          return (pos - 6 * octave) * VERT_SPACING;
+          return pos * VERT_SPACING;
         }
 
         function drawRectangle(rect, color) {
@@ -230,3 +213,9 @@ var mySong = Songs[0];
 
             return s;
 	}
+
+</script>
+
+</body>
+
+</HTML>
