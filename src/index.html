@@ -3,11 +3,15 @@
 	<head>
     	<title>Whistle Hero</title>
         <link rel="stylesheet" type="text/css" href="./style.css" />
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
         <script type="text/javascript" src="./style.js"></script>
-        <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     </head>
     <body>
+
     	<div class="wrapper">
+		<div>
+			Tolerance: <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
+		</div>
         </div>
     </body>
 </html>
