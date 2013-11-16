@@ -186,9 +186,10 @@ div.game div.countdown {
 	top: 50%;
 	margin-left: -75px;
 	margin-top: -75px;
-	background-color: rgba(0,0,0,0.4);
+	background-color: rgba(0,0,0,0.35);
 	border-radius: 30px;
 	display: none;
+	box-shadow: 0px 0px 10px 1px #000;
 }
 
 div.game div.countdown div {
