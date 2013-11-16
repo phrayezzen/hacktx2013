@@ -23,8 +23,28 @@
 			});
 			
 			$("input[rel=range]").keyup(function() {
-				$(this).closest("form").find("input[type=range]").val( $(this).val() );
+				var maxv = parseInt($(this).closest("form").find("input[type=range]").attr('max'));
+				var minv = parseInt($(this).closest("form").find("input[type=range]").attr('min'));
+				var val = $(this).val();
+				
+				if(val > maxv) {
+					val = maxv;
+				}
+				if(val < minv) {
+					val = minv;
+				}
+				
+				$(this).val(val);
+				$(this).closest("form").find("input[type=range]").val( val );
 			});
+			$("input[rel=range]").blur(function(){
+				var val = $(this).val();
+				if(val == '') {
+					$(this).val(0);
+				$(this).closest("form").find("input[type=range]").val( 0 );
+				}
+			});
+			
 			
 			// Score Resets
 			$("a[action=scores_reset]").click(function(){
@@ -179,6 +199,7 @@
         	<div class="menu">
             	<div class="title">Instructions<a rel="home"><div>X</div></a></div>
                 <div class="box">
+                	Coming Soon!
                 </div>
             </div>
         </div>
