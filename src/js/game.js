@@ -132,9 +132,10 @@ var mySong = Songs[0];
 				if( intersectingLine ) {
 					var ydiff =  Math.abs( y_val - (rects[i].y + (rects[i].height/2)) );
 					if( !isNaN(ydiff) ) {
-						userPitchCircle.graphics.clear().beginStroke("black").drawCircle(0, 0, 40);
+						var col = (parseInt("FF0000", 16) + ydiff).toString(16).substr(0, 6);
+						console.log(col);
+						userPitchCircle.graphics.clear().beginStroke("#" + col).drawCircle(0, 0, 40);
 					}
-					// console.log(ydiff);
 					newColor = DO_IT_COLOR;
 					if( intune ) {
 				    score_break = 0;
