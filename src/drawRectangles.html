@@ -87,6 +87,7 @@
 			userPitchLine.x -= moveSpeed;
 			lineX += moveSpeed;
 			var y_val = canvas.height - (userPitch / 2);
+      y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
 			if(userPitch !== undefined){
 				userPitchLine.graphics.lineTo(lineX, y_val);
 				console.log( noteStrings[noteFromPitch(userPitch) % 12] );
