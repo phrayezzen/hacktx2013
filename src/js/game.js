@@ -12,7 +12,6 @@ var DEFAULT_COLOR = "#F5B800";
 var DO_IT_COLOR = "#EE0";
 var MISS_COLOR = "#F00";
 var BINGO_COLOR = "#0F0";
-
 var canvas, width, height;
 var notes;
 var stage;
@@ -207,6 +206,7 @@ function tick() {
           noteScores[i].label.x -= moveSpeed;
           if(notes[i].correct) {
             newColor = BINGO_COLOR;
+
           } else {
             newColor = MISS_COLOR;
           }
