@@ -1,10 +1,15 @@
 Pitch Detection Application
 
+* Calibrate user input
+* More songs
+* Check if note is correct (is inside rectangle)
+* Keep track score
+* Change rectangle color when note is correct
+* Countdown when game starts after mic is allowed to use
 
-Jerry:
-	* Pitch Detection (https://github.com/cwilso/PitchDetect)
-	* Detect within a tolerance (with respect to time and frequency)
-		function judgeFrequency(song, currentBeat, userFrequency)
+
+Abdul:
+	* Keep track score
 
 Daniel:
 	* Draw rectangles on screen corresponding to JSON song.

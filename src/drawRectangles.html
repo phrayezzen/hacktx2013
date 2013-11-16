@@ -1,96 +1,190 @@
 <HTML>
 <head>
 </head>
+<script src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
 <script src="./js/easel.js"></script>
+<script src="./js/pitchdetect.js"></script>
 <script>
-		var mySong = {
-				bpm : 120,
-				title : "Song name",
-				notes : [["C",2], ["E",4], ["D",3], ["B", 3]]
-			};
+				var mySong = {
+								startTime : 0.56,
+                bpm :  94.79,
+                title : "Twinkle Twinkle Little Star",
+                notes : [["C",1],["C",1],["G",1],["G",1],["A",1],["A",1],["G",2],["F",1],["F",1],["E",1],["E",1],["D",1],["D",1],["C",2],
+						 ["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],
+						 ["C",1],["C",1],["G",1],["G",1],["A",1],["A",1],["G",2],["F",1],["F",1],["E",1],["E",1],["D",1],["D",1],["C",2]]
+				};
+	var run_game = false;
+        var FRAME_RATE = 60;
         var INIT_X = 100;
-        var VERT_SPACING = 50;
-        var BEAT_LENGTH = 30;
+        var VERT_SPACING;
+        var BEAT_LENGTH_SIZE = 120;
+        var NUM_NOTES = 12;
+        var NOTE_TOL = 20;
 
         var canvas, width, height;
+      	var notes;
         var stage;
+      	var userPitchLine;
+      	var lineX;
+      	var userPitch;
+      	var userPitchWasUndefined;
+	var rects;
+        var markerX;
+	var highlighted;
+
+        // 12 * (Math.log(frequency / 440) / Math.log(2) ) // + 69
+
         function init() {
             canvas = document.getElementById('note-cont');
             width = canvas.width;
             height = canvas.height;
+	    userPitchLine = new createjs.Shape();
+            userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100);
+            markerX = 1/4*width;
+	    toggleLiveInput();
+		
+            VERT_SPACING = height / NUM_NOTES;
+            stage = new createjs.Stage(canvas);
+            createjs.Ticker.setFPS(FRAME_RATE);
 
-            var rects = new Array();
+            var curTimeMarker = new createjs.Shape();
+            lineX = markerX;
+            var g = curTimeMarker.graphics;
+            g.beginFill("#FFF");
+            g.drawRect(markerX, 0, 1, height);
+            g.endFill();
+            stage.addChild(curTimeMarker);
+
+            rects = new Array();
             var beat = 0;
             for (var i = 0; i < mySong.notes.length; i++) {
             	note = mySong.notes[i];
               var noteLength = note[1];
               var y = getYCoordFromNote(note[0]); // pitch
               var x = getXCoordFromBeat(beat);
-              var width = noteLength * BEAT_LENGTH;
-              var height = 10;
-              rects.push(new createjs.Rectangle(x, y, width, height));
+              var width = noteLength * BEAT_LENGTH_SIZE - 2;
+              var height = NOTE_TOL;
+              rects.push(new createjs.Rectangle(0, y, width, height));
+	      rects[i].mahX = x;
               beat += noteLength; // offset next note starting beat
             }
+	    highlighted = Array(rects.length);
             console.log(rects);
 
-            stage = new createjs.Stage(canvas);
-
+      	    notes = [];
             for (var i = 0; i < rects.length; i++) {
-              var s = drawRectangle(rects[i]);
+              var s = drawRectangle(rects[i], "#F00");
+	      notes.push(s);
+	      notes[i].x = rects[i].mahX;
               stage.addChild(s);
             }
 
-      			stage.update();
+              stage.addChild(userPitchLine);
+      		stage.update();
+      		createjs.Ticker.addListener(window);
            
         }
 
+      	function tick() {
+		if(run_game) { 
+			var moveSpeed = 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
+			var y_val = canvas.height - (userPitch / 2);
+			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
+			for(var i = 0; i < notes.length; i++) {
+				notes[i].x -= moveSpeed;
+				var intersectingLine = (markerX > notes[i].x && markerX < (notes[i].x + rects[i].width));
+				var intune = mySong.notes[i][0] == userNote;
+				if( !highlighted[i] && intersectingLine ) { 
+					highlighted[i] = true;
+					notes[i].graphics.clear().beginFill("#0FF").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+				}
+				if( highlighted[i] && !intersectingLine ) {
+					highlighted[i] = false;
+					notes[i].graphics.clear().beginFill("#F00").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+				}
+				if(intune && highlighted[i]){
+					notes[i].graphics.clear().beginFill("#0F0").drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+				}
+			}
+			userPitchLine.x -= moveSpeed;
+			lineX += moveSpeed;
+<<<<<<< HEAD
+			var y_val = canvas.height - (userPitch / 2);
+=======
+			var y_val = canvas.height - (userPitch / 4);
+>>>>>>> a77925a7a5298c8876992b1e0f12f0b33248f8d5
+      y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
+			if(userPitch !== undefined){
+				userPitchLine.graphics.lineTo(lineX, y_val);
+				console.log( noteStrings[noteFromPitch(userPitch) % 12] );
+			} else {
+				// userPitchLine.graphics.moveTo(lineX, canvas.height);
+				userPitchWasUndefined = true;
+			}
+		}
+      		stage.update();
+      	}
+
         function getXCoordFromBeat(beat) {
-          var HORIZ_OFFSET = 20;
-          return beat * BEAT_LENGTH + HORIZ_OFFSET;
+          var HORIZ_OFFSET = canvas.width;
+          return beat * BEAT_LENGTH_SIZE + HORIZ_OFFSET;
         }
 
         function getYCoordFromNote(note){
           var pos;
-          var OFFSET = 100;
-          if (note == "C") {
-            pos = 0;
+          console.log(height);
+          if (note == "C" || note == "B#") {
+            pos = 6;
+          } else if (note == "C#" || note == "Db") {
+            pos = 5.5;
           } else if (note == "D") {
-            pos = 1;
-          } else if (note == "E") {
-            pos = 2;
-          } else if (note == "F") {
+            pos = 5;
+          } else if (note == "D#" || note == "Eb") {
+            pos = 4.5;
+          } else if (note == "E" || note == "Fb") {
+            pos = 4;
+          } else if (note == "F" || note == "E#") {
+            pos = 3.5;
+          } else if (note == "F#" || note == "Gb") {
             pos = 3;
           } else if (note == "G") {
-            pos = 4;
+            pos = 2.5;
+          } else if (note == "G#" || note == "Ab") {
+            pos = 2;
           } else if (note == "A") {
-            pos = 5;
-          }  else if (note == "B") {
-            pos = 6;
+            pos = 1.5;
+          } else if (note == "A#" || note == "Bb") {
+            pos = 1;
+          }  else if (note == "B" || note == "Cb") {
+            pos = 0.5;
           } else {
             console.log("Invalid note");
             return null;
           }
 
-          // * VERT_SPACING
-          return pos * VERT_SPACING + OFFSET;
+          return pos * VERT_SPACING;
         }
 
-        function drawRectangle(rect) {
-      			var s = new createjs.Shape();
+        function drawRectangle(rect, color) {
+	    var s = new createjs.Shape();
             var g = s.graphics;
 
             g.beginStroke("#000");
-            g.beginFill("#F00");
+            g.beginFill(color);
             g.drawRect(rect.x, rect.y, rect.width, rect.height);
             g.endFill();
 
             return s;
-    		}
+	}
 
 </script>
 
 <body onload="init();">
-	<canvas id="note-cont" style="background:#666;" width="900" height="900"></canvas>
+	<button onclick="run_game = true;">Start!</button>  
+  <br />
+  <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
+  <br />
+	<canvas id="note-cont" style="background:#666;" width="1600" height="900"></canvas>
 </body>
 
 </HTML>
