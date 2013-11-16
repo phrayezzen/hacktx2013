@@ -173,6 +173,12 @@ var mySong = Songs[0];
 				userPitchWasUndefined = true;
 			}
 		}
+    var last = notes[notes.length-1];
+    if (last.x < 0) {
+      $("div[rel=game]").hide();
+      $("div[rel=scores]").fadeIn("slow");
+      appendToScores(score, mySong.title)
+    }
       		stage.update();
       	}
 
