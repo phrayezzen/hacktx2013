@@ -4,6 +4,7 @@
 	<script src="./js/easel.js"></script>
 	<script src="./js/musicPlayer.js"></script>
 	<script src="./js/pitchdetect.js"></script>
+  <script src="./js/songs.js"></script>
 </head>
 
 <body onload="init();">
@@ -15,16 +16,10 @@
   <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
   <br />
 	<canvas id="note-cont" style="background:#666;" width="1600" height="900"></canvas>
-	<audio id='sound1' src="assets/twinkle-twinkle-little-star.mp3"></audio>
+	<audio id='sound1' src="assets/KillBill.mp3"></audio>
 <script>
-				var mySong = {
-								startTime : 0.50,
-                bpm :  98,
-                title : "Twinkle Twinkle Little Star",
-                notes : [["C",1],["C",1],["G",1],["G",1],["A",1],["A",1],["G",2],["F",1],["F",1],["E",1],["E",1],["D",1],["D",1],["C",2],
-						 ["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],
-						 ["C",1],["C",1],["G",1],["G",1],["A",1],["A",1],["G",2],["F",1],["F",1],["E",1],["E",1],["D",1],["D",1],["C",2]]
-				};
+				var mySong = Songs[0];
+
 	var run_game = false;
         var FRAME_RATE = 60;
         var INIT_X = 100;
