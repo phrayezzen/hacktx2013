@@ -25,6 +25,7 @@ var mySong = Songs[0];
 	var moveSpeed;
 	var audio_start;
 	var score_container = document.getElementById("score");
+	var curColor; 
 
         // 12 * (Math.log(frequency / 440) / Math.log(2) ) // + 69
 
@@ -59,6 +60,7 @@ var mySong = Songs[0];
 
             rects = new Array();
             var beat = 0;
+	    curColor = Array(mySong.notes.length);
             for (var i = 0; i < mySong.notes.length; i++) {
             	note = mySong.notes[i];
               var noteLength = note[1];
@@ -69,8 +71,8 @@ var mySong = Songs[0];
               rects.push(new createjs.Rectangle(0, y + (width/2), width, height));
 	      rects[i].mahX = x;
               beat += noteLength; // offset next note starting beat
+	      curColor[i] = DEFAULT_COLOR;
             }
-	    highlighted = Array(rects.length);
             //console.log(rects);
 
       	    notes = [];
@@ -92,7 +94,6 @@ var mySong = Songs[0];
         }
 
 	var score = 0;
-	var curColor = DEFAULT_COLOR;
       	function tick() {
 		if(run_game) { 
 			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
@@ -108,22 +109,29 @@ var mySong = Songs[0];
 				var intune = (y_val > rects[i].y && y_val < (rects[i].y + rects[i].height));
 				var newColor = DEFAULT_COLOR;
 				if( intersectingLine ) {
+					var ydiff =  Math.abs( y_val - (rects[i].y + (rects[i].height/2)) );
+					if( !isNaN(ydiff) ) {
+						userPitchCircle.graphics.clear().beginStroke("black").drawCircle(0, 0, 40);
+					}
+					console.log(ydiff);
 					newColor = DO_IT_COLOR;
 					if( intune ) {
 						score += 1;
 						newColor = BINGO_COLOR;
 					}
 				}
-				if( newColor != curColor ){
+				if( newColor != curColor[i] ){
 					notes[i].graphics.clear().beginStroke("#000").beginFill(newColor).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
-					curColor = newColor;
+					curColor[i] = newColor;
 				}
 
 			}
 			userPitchLine.x -= moveSpeed;
 			lineX += moveSpeed;
 			if(userPitch !== undefined){
-				userPitchLine.graphics.lineTo(lineX, y_val);
+				if( !isNaN(y_val) ) {
+					userPitchLine.graphics.lineTo(lineX, y_val);
+				}
 				//console.log( noteStrings[noteFromPitch(userPitch) % 12] );
 			} else {
 				// userPitchLine.graphics.moveTo(lineX, canvas.height);
