@@ -230,29 +230,31 @@ function updatePitch( time ) {
 */
 	// possible other approach to confidence: sort the array, take the median; go through the array and compute the average deviation
 
- 	detectorElem.className = (confidence>50)?"confident":"vague";
+ 	//detectorElem.className = (confidence>50)?"confident":"vague";
 	// TODO: Paint confidence meter on canvasElem here.
 
  	if (num_cycles == 0 || amp < window.tolerance) {
-	 	pitchElem.innerText = "--";
-		noteElem.innerText = "-";
-		detuneElem.className = "";
-		detuneAmount.innerText = "--";
+//	 	pitchElem.innerText = "--";
+//		noteElem.innerText = "-";
+//		detuneElem.className = "";
+//		detuneAmount.innerText = "--";
+		userPitch = undefined;
  	} else {
-	 	pitchElem.innerHTML = Math.floor( pitch );
-	 	var note =  noteFromPitch( pitch );
-		noteElem.innerHTML = noteStrings[note%12];
-		var detune = centsOffFromPitch( pitch, note );
-		if (detune == 0 ) {
-			detuneElem.className = "";
-			detuneAmount.innerHTML = "--";
-		} else {
-			if (detune < 0)
-				detuneElem.className = "flat";
-			else
-				detuneElem.className = "sharp";
-			detuneAmount.innerHTML = Math.abs( detune );
-		}
+		userPitch = pitch;
+//	 	pitchElem.innerHTML = Math.floor( pitch );
+	 	//var note =  noteFromPitch( pitch );
+//		noteElem.innerHTML = noteStrings[note%12];
+//		var detune = centsOffFromPitch( pitch, note );
+//		if (detune == 0 ) {
+//			detuneElem.className = "";
+//			detuneAmount.innerHTML = "--";
+//		} else {
+//			if (detune < 0)
+//				detuneElem.className = "flat";
+//			else
+//				detuneElem.className = "sharp";
+//			detuneAmount.innerHTML = Math.abs( detune );
+//		}
 	}
 
 	if (!window.requestAnimationFrame)

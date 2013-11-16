@@ -1,7 +1,9 @@
 <HTML>
 <head>
 </head>
+<script src="http://cwilso.github.io/AudioContext-MonkeyPatch/AudioContextMonkeyPatch.js"></script>
 <script src="./js/easel.js"></script>
+<script src="./js/pitchdetect.js"></script>
 <script>
 	var mySong = {
 		bpm : 120,
@@ -15,6 +17,7 @@
         var canvas, width, height;
 	var notes;
         var stage;
+	var userPitch;
         function init() {
             canvas = document.getElementById('note-cont');
             width = canvas.width;
@@ -51,6 +54,9 @@
 	function tick() {
 		for(var i = 0; i < notes.length; i++) {
 			notes[i].x -= 1 * (mySong.bpm / 120);
+		}
+		if(userPitch !== undefined){
+//			console.log(userPitch);
 		}
 		stage.update();
 	}
@@ -101,7 +107,9 @@
 </script>
 
 <body onload="init();">
+	<button onclick="toggleLiveInput()">Start!</button>
 	<canvas id="note-cont" style="background:#666;" width="900" height="900"></canvas>
+	<input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
 </body>
 
 </HTML>
