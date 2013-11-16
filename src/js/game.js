@@ -130,7 +130,7 @@ function tick() {
     var y_val = canvas.height - (userPitch / 4);
     //y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
     // y_val = 12 * (Math.log(y_val / 440) / Math.log(2)) * VERT_SPACING + 600;
-    y_val = 1.75 * 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 140; // twinkle
+    y_val = 1.55 * 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 330; // twinkle
     if (!isNaN(y_val)) {
       userPitchCircle.y = y_val;
     }
