@@ -7,7 +7,7 @@
 </head>
 
 <body onload="init();">
-	<button onclick="musicPlayer('sound1'); run_game = true;">Start!</button>  
+	<button onclick="musicPlayer('sound1', audio_start); run_game = true;">Start!</button>  
 
   <br />
 	Score: <p id="score"></p>
@@ -18,8 +18,8 @@
 	<audio id='sound1' src="assets/twinkle-twinkle-little-star.mp3"></audio>
 <script>
 				var mySong = {
-								startTime : 0.56,
-                bpm :  94.79,
+								startTime : 0.50,
+                bpm :  98,
                 title : "Twinkle Twinkle Little Star",
                 notes : [["C",1],["C",1],["G",1],["G",1],["A",1],["A",1],["G",2],["F",1],["F",1],["E",1],["E",1],["D",1],["D",1],["C",2],
 						 ["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],["G",1],["G",1],["F",1],["F",1],["E",1],["E",1],["D",2],
@@ -32,8 +32,8 @@
         var BEAT_LENGTH_SIZE = 120;
         var NUM_NOTES = 12;
         var NOTE_TOL = 50;
-	var DEFAULT_COLOR = "#FF0";
-	var DO_IT_COLOR = "#0FF";
+	var DEFAULT_COLOR = "#F5B800";
+	var DO_IT_COLOR = "#F00";
 	var BINGO_COLOR = "#0F0";
 
         var canvas, width, height;
@@ -46,6 +46,8 @@
 	var rects;
         var markerX;
 	var highlighted;
+	var moveSpeed;
+	var audio_start;
 
         // 12 * (Math.log(frequency / 440) / Math.log(2) ) // + 69
 
@@ -55,7 +57,9 @@
             height = canvas.height;
 	    userPitchLine = new createjs.Shape();
             userPitchLine.graphics.setStrokeStyle(1).beginStroke("black").moveTo(100,100);
-            markerX = 1/4*width;
+	moveSpeed = (mySong.bpm / 60) * (BEAT_LENGTH_SIZE / FRAME_RATE);
+        markerX = 1/4*width;
+	audio_start = (((canvas.width - markerX) / moveSpeed) / 60) - mySong.startTime;
 	    toggleLiveInput();
 		
             VERT_SPACING = height / NUM_NOTES;
@@ -79,7 +83,7 @@
               var x = getXCoordFromBeat(beat);
               var width = noteLength * BEAT_LENGTH_SIZE - 2;
               var height = NOTE_TOL;
-              rects.push(new createjs.Rectangle(0, y - (width/2), width, height));
+              rects.push(new createjs.Rectangle(0, y + (width/2), width, height));
 	      rects[i].mahX = x;
               beat += noteLength; // offset next note starting beat
             }
@@ -104,7 +108,6 @@
 	var score = 0;
       	function tick() {
 		if(run_game) { 
-			var moveSpeed = 2 * BEAT_LENGTH_SIZE / FRAME_RATE;
 			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
 			var y_val = canvas.height - (userPitch / 4);
 		        y_val = 12 * (Math.log(y_val / 440) / Math.log(2) ) * VERT_SPACING + 69;
