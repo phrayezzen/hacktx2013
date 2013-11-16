@@ -1,0 +1,104 @@
+body {
+	font-family: 'Open Sans';
+	background-image: url('../img/bg.jpg');
+	background-repeat: repeat;
+}
+
+div[rel] {
+	display: none;
+}
+
+div.home div.menu {
+	max-width: 350px;
+}
+
+div[rel] div.menu {
+	background-color: #FFF;
+	width: 50%;
+	margin-left: auto;
+	margin-right: auto;
+	margin-top: 100px;
+	border-radius: 10px;
+	box-shadow: 0px 0px 15px 2px #000;
+	padding: 0px;
+	min-height: 100px;
+}
+
+div[rel] div.menu div.title {
+	color: #FFF;
+	background-color: rgb(76, 102, 164);
+	padding: 5px 10px;
+	border-radius: 10px 10px 0px 0px;
+	font-size: 25px;
+	text-shadow: 2px 2px 2px #000;
+	border-bottom: 1px solid #000;
+	text-align: center;
+}
+
+div[rel] div.menu div.title a {
+	text-decoration: none;
+}
+
+div[rel] div.menu div.title div {
+	color: #000;
+	float: right;
+	margin-right: -10px;
+	text-shadow: 0px 0px 3px #DDD;
+	cursor: pointer;
+	user-select: none;
+	background-color: #EFEFEF;
+	padding: 5px 10px;
+	margin-top: -5px;
+	border-radius: 0px 10px 0px 0px;
+}
+
+div[rel] div.menu div.box {
+	padding: 10px;
+}
+
+div.home div.menu div.box a[rel]:first-child div {
+	margin-top: 20px;
+}
+
+div.home div.menu div.box a[rel]:last-child div {
+	margin-bottom: 30px;
+}
+
+div.home div.menu div.box a[rel] div {
+	padding: 4px 8px;
+	border-radius: 5px;
+	border: 1px solid #000;
+	color: #FFF;
+	background-color: #093;
+	width: 180px;
+	margin-right: auto;
+	margin-left: auto;
+	text-align: center;
+	text-shadow: 1px 1px 2px #000;
+	box-shadow: 0px 0px 2px 0px #000;
+	transition: all 0.5s ease-in;
+	margin-bottom: 10px;
+}
+
+div.home div.menu div.box a[rel] div:hover {
+	background-color: #3C6;
+	position: relative;
+	left: 5px;
+}
+
+div.home div.menu div.box a[rel] div:active {
+	position: relative;
+	left: 5px;
+	top: 2px;
+}
+
+div.home div.menu div.box a[rel] {
+	text-decoration: none;
+}
+
+div.home div.credits {
+	color: #FFF;
+	margin-top: 15px;
+	text-align: center;
+	text-shadow: 1px 1px 2px #FFF;
+}

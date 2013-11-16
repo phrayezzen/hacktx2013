@@ -1,17 +1,70 @@
 <!doctype html>
-<html>
+<html lang="en">
 	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
     	<title>Whistle Hero</title>
-        <link rel="stylesheet" type="text/css" href="./style.css" />
-        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script type="text/javascript" src="./style.js"></script>
+        <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,600,700,700italic,600italic' rel='stylesheet' type='text/css'>
+        <link rel="stylesheet" type="text/css" href="./css/style.css" />
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <script type="text/javascript">
+		$(document).ready(function(){
+			$("div[rel=home]").show();
+			
+			$("a[rel]").click(function(){
+				$("div[rel]").hide();
+				$("div[rel="+$(this).attr("rel")+"]").fadeIn("slow");
+			});
+		});
+		</script>
     </head>
     <body>
-
-    	<div class="wrapper">
-		<div>
-			Tolerance: <input type="range" min="16000" max="19000" onchange="window.tolerance = this.value"/>
-		</div>
+    
+    	<div rel="home" class="home">
+        	<div class="menu">
+            	<div class="title">Whistle Hero</div>
+                <div class="box">
+                	<a href="javascript:;" rel="game"><div>New Game</div></a>
+                    <a href="javascript:;" rel="scores"><div>High Scores</div></a>
+                    <a href="javascript:;" rel="settings"><div>Settings</div></a>
+                    <a href="javascript:;" rel="instructions"><div>Instructions</div></a>
+                </div>
+            </div>
+            
+            <div class="credits"></div>
         </div>
+        
+        <div rel="scores" class="scores">
+        	<div class="menu">
+            	<div class="title">High Scores<a rel="home"><div>X</div></a></div>
+                <div class="box">
+                	asdf
+                </div>
+            </div>
+        </div>
+        
+        <div rel="game" class="game">
+        	game
+        </div>
+        
+        <div rel="settings" class="settings">
+        	<div class="menu">
+            	<div class="title">Settings<a rel="home"><div>X</div></a></div>
+                <div class="box">
+                	asdf
+                </div>
+            </div>
+        </div>
+        
+        <div rel="instructions" class="instructions">
+        	<div class="menu">
+            	<div class="title">Instructions<a rel="home"><div>X</div></a></div>
+                <div class="box">
+                	asdf
+                </div>
+            </div>
+        </div>
+        
     </body>
 </html>
