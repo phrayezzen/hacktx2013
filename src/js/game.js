@@ -201,7 +201,7 @@ var mySong = Songs[0];
             return null;
           }
 
-          return (pos + 6 * octave) * VERT_SPACING;
+          return (pos - 6 * octave) * VERT_SPACING;
         }
 
         function drawRectangle(rect, color) {
