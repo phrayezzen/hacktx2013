@@ -1,0 +1,31 @@
+Pitch Detection Application
+
+Jerry:
+	* Pitch Detection (https://github.com/cwilso/PitchDetect)
+	* Detect within a tolerance (with respect to time and frequency)
+
+Daniel:
+	* Draw rectangles on screen corresponding to JSON song.
+	* Make rectanges scroll with time.
+
+Matt:
+	* Pretty user-interface and controls (new game, top scores, tick marks on the side for notes)
+	* Draw user input pitch in realtime
+
+Xilin:
+	* Play audio (song) in background using JavaScript.
+
+
+Jonathan:
+	* Represent correct notes in a song as JSON.
+	[{
+		bpm : int,
+		title : "title",
+		notes : [[FREQ, BEATS],...]
+	}]
+
+	SONGS:
+		Twinkle-Twinkle Little Star
+		Star-Spangled Banner
+		Kill Bill: http://www.youtube.com/watch?v=FHcsjO-lVb
+
