@@ -24,6 +24,7 @@ var mySong = Songs[0];
 	var highlighted;
 	var moveSpeed;
 	var audio_start;
+	var score_container = document.getElementById("score");
 
         // 12 * (Math.log(frequency / 440) / Math.log(2) ) // + 69
 
@@ -85,10 +86,13 @@ var mySong = Songs[0];
       		stage.update();
       		createjs.Ticker.addListener(window);
            
+		setInterval(function() { 
+			score_container.innerHTML = "" + score;
+		}, 1000);
         }
 
-	var score_container = document.getElementById("score");
 	var score = 0;
+	var curColor = DEFAULT_COLOR;
       	function tick() {
 		if(run_game) { 
 			var userNote = noteStrings[noteFromPitch(userPitch) % 12];
@@ -102,20 +106,19 @@ var mySong = Songs[0];
 				notes[i].x -= moveSpeed;
 				var intersectingLine = (markerX > notes[i].x && markerX < (notes[i].x + rects[i].width));
 				var intune = (y_val > rects[i].y && y_val < (rects[i].y + rects[i].height));
-				if( !highlighted[i] && intersectingLine ) { 
-					highlighted[i] = true;
-					notes[i].graphics.clear().beginStroke("#000").beginFill(DO_IT_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+				var newColor = DEFAULT_COLOR;
+				if( intersectingLine ) {
+					newColor = DO_IT_COLOR;
+					if( intune ) {
+						score += 1;
+						newColor = BINGO_COLOR;
+					}
 				}
-				if( highlighted[i] && !intersectingLine ) {
-					highlighted[i] = false;
-					notes[i].graphics.clear().beginStroke("#000").beginFill(DEFAULT_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+				if( newColor != curColor ){
+					notes[i].graphics.clear().beginStroke("#000").beginFill(newColor).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
+					curColor = newColor;
 				}
-				if(intune && highlighted[i]){
-					score += 1;
-					$("#score").html(score);
-					score_container.innerHTML = "" + score;
-					notes[i].graphics.clear().beginStroke("#000").beginFill(BINGO_COLOR).drawRect(rects[i].x, rects[i].y, rects[i].width, rects[i].height).endFill();
-				}
+
 			}
 			userPitchLine.x -= moveSpeed;
 			lineX += moveSpeed;

@@ -16,7 +16,7 @@
 var Songs = [
 	{
 				startTime : 0.56,
-                bpm :  100,//94.79,
+                bpm :  94.79,
                 title : "Twinkle Twinkle Little Star",
                 source : "twinkle-twinkle-little-star.mp3",
                 notes : [["C",1,0],["C",1,0],["G",1,0],["G",1,0],["A",1,0],["A",1,0],["G",2,0],["F",1,0],["F",1,0],["E",1,0],["E",1,0],["D",1,0],["D",1,0],["C",2,0],
