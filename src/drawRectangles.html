@@ -25,7 +25,7 @@
       	var notes;
         var stage;
       	var userPitchLine;
-      	var lineX = 200;
+      	var lineX;
       	var userPitch;
       	var userPitchWasUndefined;
 
@@ -42,6 +42,7 @@
 
             var curTimeMarker = new createjs.Shape();
             var markerX = 1/4*width;
+            lineX = markerX;
             var g = curTimeMarker.graphics;
             g.beginFill("#FFF");
             g.drawRect(markerX, 0, 1, height);
@@ -88,7 +89,7 @@
 				userPitchLine.graphics.lineTo(lineX, y_val);
 				console.log( noteStrings[noteFromPitch(userPitch) % 12] );
 			} else {
-				userPitchLine.graphics.moveTo(lineX, canvas.height);
+				// userPitchLine.graphics.moveTo(lineX, canvas.height);
 				userPitchWasUndefined = true;
 			}
 		}

@@ -1,5 +1,11 @@
 Pitch Detection Application
 
+* Calibrate user input
+* More songs
+* Keep track score
+* Change rectangle color when note is correct
+* Countdown when game starts
+
 
 Jerry:
 	* Pitch Detection (https://github.com/cwilso/PitchDetect)
