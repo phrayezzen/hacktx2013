@@ -18,7 +18,7 @@
         var INIT_X = 100;
         var VERT_SPACING;
         var BEAT_LENGTH_SIZE = 120;
-        var NUM_NOTES = 7;
+        var NUM_NOTES = 12;
         var NOTE_TOL = 20;
 
         var canvas, width, height;
@@ -31,6 +31,8 @@
 	var rects;
         var markerX;
 	var highlighted;
+
+        // 12 * (Math.log(frequency / 440) / Math.log(2) ) // + 69
 
         function init() {
             canvas = document.getElementById('note-cont');
@@ -118,34 +120,43 @@
       	}
 
         function getXCoordFromBeat(beat) {
-          var HORIZ_OFFSET = 2/9 * canvas.width;
+          var HORIZ_OFFSET = canvas.width;
           return beat * BEAT_LENGTH_SIZE + HORIZ_OFFSET;
         }
 
         function getYCoordFromNote(note){
           var pos;
-          var OFFSET = 2/9 * canvas.height;
           console.log(height);
-          if (note == "C") {
+          if (note == "C" || note == "B#") {
             pos = 6;
+          } else if (note == "C#" || note == "Db") {
+            pos = 5.5;
           } else if (note == "D") {
             pos = 5;
-          } else if (note == "E") {
+          } else if (note == "D#" || note == "Eb") {
+            pos = 4.5;
+          } else if (note == "E" || note == "Fb") {
             pos = 4;
-          } else if (note == "F") {
+          } else if (note == "F" || note == "E#") {
+            pos = 3.5;
+          } else if (note == "F#" || note == "Gb") {
             pos = 3;
           } else if (note == "G") {
+            pos = 2.5;
+          } else if (note == "G#" || note == "Ab") {
             pos = 2;
           } else if (note == "A") {
+            pos = 1.5;
+          } else if (note == "A#" || note == "Bb") {
             pos = 1;
-          }  else if (note == "B") {
-            pos = 0;
+          }  else if (note == "B" || note == "Cb") {
+            pos = 0.5;
           } else {
             console.log("Invalid note");
             return null;
           }
 
-          return pos * VERT_SPACING + OFFSET;
+          return pos * VERT_SPACING;
         }
 
         function drawRectangle(rect, color) {
