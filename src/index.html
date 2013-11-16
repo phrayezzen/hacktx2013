@@ -52,15 +52,20 @@
 				}
 			});
 			
-			
 			// Score Resets
 			$("a[action=scores_reset]").click(function(){
 				$(".scores").find("table").find("tbody").html("<tr><td colspan=\"3\">You have no scores to display.</td></tr>");
-				localStorage["highscores"] = null;
+				highscores = [];
  			});
 			
 			$("a[rel=scores]").click(function(){
-				// TODO: REFRESH SCORES TABLE
+                var tableBody = "";
+
+                
+				for (var i = 0; i < highscores.length; i++) {
+                    tableBody += "<tr><td>"+highscores[i].score+"</td><td>"+highscores[i].songTitle+"</td><td>N/A</td></tr>";
+                }    
+                $(".scores").find("table").find("tbody").html(tableBody);
 			});
 			
 			$("a[rel=game]").click(function(){
@@ -95,8 +100,9 @@
             this.songTitle = songTitle;
         }
 		
+        var highscores = [];
 		function appendToScores(score, songTitle) {
-			localStorage["highscores"].append(new Score(score, songTitle));
+            highscores.append(new Score(score, songTitle));
 		}
 		
 		function configGetTimeTolerance() {
@@ -127,13 +133,14 @@
                     <a href="javascript:;" rel="scores"><div>High Scores</div></a>
                     <a href="javascript:;" rel="settings"><div>Settings</div></a>
                     <a href="javascript:;" rel="instructions"><div>Instructions</div></a>
+                    <a href="https://github.com/phrayezzen/hacktx2013" rel><div>Source Code</div></a>
                 </div>
             </div>
             
             <div class="credits">Created by Matt, X, Daniel, Jonathan, &amp; Abdul</div>
         </div>
         
-        <div rel="scores" class="scores">
+        <div rel="scores" class="scores" id="scores">
         	<div class="menu">
             	<div class="title">High Scores<a rel="home"><div>X</div></a></div>
                 <div class="box">

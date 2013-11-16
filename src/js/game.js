@@ -177,7 +177,9 @@ var mySong = Songs[0];
     if (last.x < 0) {
       $("div[rel=game]").hide();
       $("div[rel=scores]").fadeIn("slow");
-      appendToScores(score, mySong.title)
+      console.log(score)
+      console.log(mySong.title)
+      appendToScores(score, mySong.title);
     }
       		stage.update();
       	}
