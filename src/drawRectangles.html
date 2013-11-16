@@ -1,0 +1,65 @@
+<HTML>
+<head>
+</head>
+<script src="./js/easel.js"></script>
+<script>
+		var mySong = {
+				bpm : 120,
+				title : "Song name",
+				notes : [[1,2], [3,4], [2,3]]
+			};
+        var INIT_X = 100;
+        var VERT_SPACING = 50;
+        var BEAT_LENGTH = 30;
+
+        var canvas, width, height;
+        var stage;
+        function init() {
+            canvas = document.getElementById('note-cont');
+            width = canvas.width;
+            height = canvas.height;
+
+            var rects = new Array();
+            var x = INIT_X;
+            for (var i = 0; i < mySong.notes.length; i++) {
+            	note = mySong.notes[i];
+              var y = note[0]*VERT_SPACING; // pitch
+              var width = note[1]*BEAT_LENGTH;
+              var height = 10;
+              rects.push(new createjs.Rectangle(x, y, width, height));
+              x += width; // offset next note
+            }
+            console.log(rects);
+
+            stage = new createjs.Stage(canvas);
+
+            for (var i = 0; i < rects.length; i++) {
+              var s = drawRectangle(rects[i]);
+              stage.addChild(s);
+            }
+
+      			stage.update();
+           
+        }
+
+        function drawRectangle(rect) {
+      			var s = new createjs.Shape();
+            var g = s.graphics;
+
+            // g.setStrokeStyle(15, 'round', 'round');
+            g.beginStroke("#000");
+            g.beginFill("#F00");
+            g.drawRect(rect.x, rect.y, rect.width, rect.height);
+            g.endFill();
+            // g.setStrokeStyle(1, 'round', 'round');
+
+            return s;
+    		}
+
+</script>
+
+<body onload="init();">
+	<canvas id="note-cont" style="background:#666;" width="960" height="400"></canvas>
+</body>
+
+</HTML>
