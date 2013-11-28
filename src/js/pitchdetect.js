@@ -22,7 +22,7 @@ window.onload = function() {
 	request.send();
 
 
-}
+};
 
 function error() {
     alert('Stream generation failed.');
